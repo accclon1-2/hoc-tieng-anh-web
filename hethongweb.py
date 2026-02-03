@@ -10,7 +10,7 @@ st.set_page_config(page_title="UTH English Pro", layout="centered", page_icon="ð
 
 st.markdown("""
     <style>
-    .main { background-color: #f5f7f9; }
+    .main { background-color: #ccff00; }
     .stButton>button { width: 100%; border-radius: 20px; height: 3em; background-color: #007bff; color: white; }
     .word-card { background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; margin-bottom: 20px; border-left: 5px solid #007bff; }
     .vn-meaning { color: #1f2937; font-size: 28px; font-weight: bold; }
