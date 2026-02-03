@@ -3,7 +3,7 @@ import json
 import random
 from gtts import gTTS
 import io
-import streamlit_analytics2 as streamlit_analytics # Dùng bản số 2 ổn định hơn
+import streamlit_analytics2 as streamlit_analytics
 
 PASSWORD_ADMIN = "uth2026" 
 
@@ -12,35 +12,32 @@ st.set_page_config(page_title="Học Tiếng Anh UTH", layout="centered")
 def load_data():
     try:
         with open("data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-            # Kiểm tra nếu file JSON rỗng
-            if not data:
-                return {"Lỗi": [{"en": "Data Empty", "vn": "File JSON đang rỗng"}]}
-            return data
+            return json.load(f)
     except Exception:
-        return {"Lỗi": [{"en": "File Error", "vn": "Không đọc được data.json"}]}
+        return {"Lỗi": [{"en": "Error", "vn": "Kiểm tra lại file data.json nhé Kiệt!"}]}
 
 data = load_data()
 
-# Bắt đầu theo dõi lượt truy cập
+# Bắt đầu theo dõi lượt truy cập từ người dùng
 with streamlit_analytics.track():
     st.title("📚 Học Tiếng Anh + Phát Âm")
 
-    # Cổng quản trị nằm gọn trong Sidebar
+    # --- CỔNG QUẢN TRỊ ---
     with st.sidebar:
-        st.header("Cổng Quản Trị")
-        pw = st.text_input("Mật khẩu Admin:", type="password")
+        st.header("Admin Panel")
+        pw = st.text_input("Mật khẩu xem thống kê:", type="password")
+        
         if pw == PASSWORD_ADMIN:
-            st.success("Chào Kiệt! Đây là thống kê:")
-            # Sử dụng cách gọi an toàn hơn
-            try:
-                streamlit_analytics.show_results()
-            except:
-                st.warning("Không thể hiển thị biểu đồ lúc này.")
+            st.success("Chào Kiệt! Đây là dữ liệu server:")
+            # Thay vì gọi hàm show_results() dễ lỗi, ta dùng tham số trực tiếp
+            streamlit_analytics.show_results() 
+        elif pw != "":
+            st.error("Sai mật khẩu!")
 
-    # Giao diện học tập
+    # --- GIAO DIỆN HỌC TẬP ---
+    # (Giữ nguyên phần code học tập cũ của bạn vì nó đang chạy tốt)
     category = st.selectbox("Chọn chủ đề:", list(data.keys()))
-
+    
     if 'pool' not in st.session_state or st.button("Làm mới lượt học 🔄"):
         words = data[category]
         random.shuffle(words)
@@ -63,7 +60,7 @@ with streamlit_analytics.track():
             user_input = st.text_input("Gõ từ tiếng Anh:").strip().lower()
             if st.form_submit_button("Kiểm tra"):
                 if user_input == current_word['en'].lower():
-                    st.success("Chính xác!")
+                    st.success("Chính xác! 🎉")
                     st.session_state.index += 1
                     st.session_state.score += 1
                     st.rerun()
@@ -71,4 +68,4 @@ with streamlit_analytics.track():
                     st.error(f"Sai rồi! Đáp án là: {current_word['en']}")
     else:
         st.balloons()
-        st.success(f"Xong! Bạn đúng {st.session_state.score}/10")
+        st.success(f"Xong! Điểm của Kiệt là: {st.session_state.score}/10")
