@@ -8,7 +8,8 @@
         {"en": "patient", "vn": "bệnh nhân/kiên nhẫn"},
         {"en": "bad boy", "vn": "cậu bé hư/bad boy"},
         {"en": "angels", "vn": "thiên thần"},
-        {"en": "who is this", "vn": "ai đây"}
+        {"en": "who is this", "vn": "ai đây"},
+        {"en": "coach", "vn": "huấn luyện viên"}
     ],
     "Động vật & Sinh vật": [
         {"en": "mice", "vn": "chuột"},
@@ -16,7 +17,9 @@
         {"en": "insects", "vn": "côn trùng"},
         {"en": "ears scratched.", "vn": "Tai gãi."},
         {"en": "fur", "vn": "lông thú"},
-        {"en": "paws", "vn": "bàn chân"}
+        {"en": "paws", "vn": "bàn chân"},
+        {"en": "bunny", "vn": "thỏ"},
+        {"en": "bunnies", "vn": "thỏ"}
     ],
     "Đồ ăn & Thực phẩm": [
         {"en": "cereal", "vn": "ngũ cốc"},
@@ -52,7 +55,10 @@
         {"en": "centigrade", "vn": "bách phân"},
         {"en": "thirty degree", "vn": "ba mươi độ"},
         {"en": "temperature", "vn": "nhiệt độ"},
-        {"en": "weather report", "vn": "báo cáo thời tiết"}
+        {"en": "weather report", "vn": "báo cáo thời tiết"},
+        {"en": "maple", "vn": "cây phong"},
+        {"en": "leaves", "vn": "lá"},
+        {"en": "ocean", "vn": "đại dương"}
     ],
     "Y tế & Cấp cứu": [
         {"en": "drug", "vn": "thuốc"},
@@ -91,7 +97,10 @@
         {"en": "driveway.", "vn": "đường lái xe."},
         {"en": "bracelet", "vn": "Vòng đeo tay"},
         {"en": "craft kit", "vn": "bộ thủ công"},
-        {"en": "craft", "vn": "thủ công"}
+        {"en": "craft", "vn": "thủ công"},
+        {"en": "cabin", "vn": "cabin"},
+        {"en": "cottage", "vn": "ngôi nhà tranh"},
+        {"en": "basket", "vn": "rổ"}
     ],
     "Hoạt động & Trường học": [
         {"en": "lifts weights", "vn": "nâng tạ"},
@@ -118,9 +127,15 @@
         {"en": "community centre", "vn": "Trung tâm cộng đồng"},
         {"en": "communicate", "vn": "giao tiếp"},
         {"en": "beach game", "vn": "trò chơi bãi biển"},
-        {"en": "answer the questions", "vn": "trả lời các câu hỏi"}
+        {"en": "answer the questions", "vn": "trả lời các câu hỏi"},
+        {"en": "hid", "vn": "giấu"},
+        {"en": "easter", "vn": "lễ Phục sinh"},
+        {"en": "education", "vn": "giáo dục"},
+        {"en": "college", "vn": "trường cao đẳng"},
+        {"en": "league", "vn": "liên minh"}
     ],
     "Cảm xúc, Tính chất & Khác": [
+        {"en": "declarative", "vn": "khai báo"},
         {"en": "small", "vn": "bé nhỏ"},
         {"en": "soft", "vn": "mềm mại"},
         {"en": "brought", "vn": "đem lại"},
@@ -146,7 +161,11 @@
         {"en": "burn", "vn": "đốt cháy"},
         {"en": "push", "vn": "đẩy"},
         {"en": "aruning old tap", "vn": "cung cấp vòi cũ"},
-        {"en": "cover", "vn": "che"}
+        {"en": "cover", "vn": "che"},
+        {"en": "excited", "vn": "hào hứng"},
+        {"en": "behind", "vn": "phía sau"},
+        {"en": "successful", "vn": "thành công"},
+        {"en": "popular", "vn": "phổ biến"}
     ],
     "Cụm từ dài": [
         {"en": "she was victim in accident", "vn": "cô ấy là nạn nhân trong một vụ tai nạn"},
