@@ -16,10 +16,8 @@ st.markdown("<style>div[data-testid='stSelectbox'], div[data-testid='stRadio'] l
 # --- 1. QUẢN LÝ DỮ LIỆU & LOGGING ---
 @st.cache_data
 def load_data():
-    try:
         with open("data.json", "r", encoding="utf-8") as f:
             return json.load(f)
-    except: return {}
 
 def log_action(username, word_en, result):
     """Ghi dữ liệu học tập vào file CSV để làm Data Science"""
