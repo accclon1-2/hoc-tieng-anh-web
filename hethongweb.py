@@ -53,7 +53,7 @@ def play_audio(text):
 data = load_data()
 with st.sidebar:
     st.title("🎓 UTH Pro")
-    mode = st.radio("Chế độ:", ["Từ vựng ⌨️", "Trắc nghiệm", "Reading", "Writing", "Thống kê"])
+    mode = st.radio("Chế độ:", ["Từ vựng", "Trắc nghiệm", "Reading", "Writing", "Thống kê"])
     level = st.selectbox("Trình độ:", list(data.keys()))
     if mode == "Từ vựng":
         type_mode = st.selectbox("Kiểu học:", ["Anh -> Việt", "Việt -> Anh"])
