@@ -36,7 +36,7 @@ def log_action(user, task, result, mode):
 # --- 3. KHỞI TẠO BIẾN TẠM (SESSION STATE) ---
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = True
-    st.session_state.username = "Kiet_Admin"
+    st.session_state.username = "Hi"
 
 if 'word_index' not in st.session_state: st.session_state.word_index = 0
 if 'current_word' not in st.session_state: st.session_state.current_word = None
@@ -53,14 +53,14 @@ def play_audio(text):
 data = load_data()
 with st.sidebar:
     st.title("🎓 UTH Pro")
-    mode = st.radio("Chế độ:", ["Từ vựng ⌨️", "Trắc nghiệm 📝", "Reading 📖", "Writing ✍️", "Thống kê 📊"])
+    mode = st.radio("Chế độ:", ["Từ vựng ⌨️", "Trắc nghiệm", "Reading", "Writing", "Thống kê"])
     level = st.selectbox("Trình độ:", list(data.keys()))
-    if mode == "Từ vựng ⌨️":
+    if mode == "Từ vựng":
         type_mode = st.selectbox("Kiểu học:", ["Anh -> Việt", "Việt -> Anh"])
 
 # --- 5. LOGIC PHẦN TỪ VỰNG (ĐÃ TỐI ƯU 100%) ---
-if mode == "Từ vựng ⌨️":
-    st.header(f"⌨️ Luyện tập: {level}")
+if mode == "Từ vựng":
+    st.header(f"Luyện tập: {level}")
     vocab = data[level].get("vocabulary", [])
     
     if not vocab:
@@ -94,10 +94,10 @@ if mode == "Từ vựng ⌨️":
 
         # NÚT BẤM
         c_btn1, c_btn2 = st.columns(2)
-        if c_btn1.button("Kiểm tra ✅", use_container_width=True):
+        if c_btn1.button("Kiểm tra", use_container_width=True):
             if ans.strip().lower() == correct.strip().lower():
                 st.balloons()
-                st.success("Quá giỏi Kiệt ơi! 🎉")
+                st.success("Chuẩn cơm mẹ nấu!")
                 log_action(st.session_state.username, w['en'], 1, "Vocab")
                 st.session_state.current_word = None # Để vòng lặp sau bốc từ mới
                 st.rerun()
@@ -105,13 +105,13 @@ if mode == "Từ vựng ⌨️":
                 st.error(f"Sai rồi! Đáp án là: **{correct}**")
                 log_action(st.session_state.username, w['en'], 0, "Vocab")
         
-        if c_btn2.button("Đổi từ khác ⏭️", use_container_width=True):
+        if c_btn2.button("Đổi từ khác", use_container_width=True):
             st.session_state.current_word = None
             st.rerun()
 
 # --- CÁC CHẾ ĐỘ KHÁC (GIỮ NGUYÊN HOẶC TỰ ĐỘNG GEN) ---
-elif mode == "Trắc nghiệm 📝":
-    st.header("📝 Trắc nghiệm")
+elif mode == "Trắc nghiệm":
+    st.header("Trắc nghiệm")
     vocab = data[level].get("vocabulary", [])
     if vocab:
         if st.session_state.current_word is None: st.session_state.current_word = random.choice(vocab)
@@ -128,14 +128,14 @@ elif mode == "Trắc nghiệm 📝":
                 st.session_state.current_word = None; st.rerun()
             else: st.error("Sai rồi!"); log_action(st.session_state.username, q['en'], 0, "Quiz")
 
-elif mode == "Reading 📖":
+elif mode == "Reading":
     st.info("💡 Bài đọc lấy từ data.json...")
     tasks = data[level].get("reading", [])
     if tasks: st.write(random.choice(tasks)['passage'])
     else: st.warning("Trống dữ liệu Reading.")
 
-elif mode == "Writing ✍️":
-    st.info("✍️ Luyện viết câu...")
+elif mode == "Writing":
+    st.info("Luyện viết câu...")
     tasks = data[level].get("writing", [])
     if tasks:
         t = random.choice(tasks)
@@ -143,8 +143,8 @@ elif mode == "Writing ✍️":
         if st.button("Xem đáp án"): st.success(t['en_sentence'])
     else: st.warning("Trống dữ liệu Writing.")
 
-elif mode == "Thống kê 📊":
-    st.header("📊 Kết quả của bạn")
+elif mode == "Thống kê":
+    st.header("Kết quả của bạn")
     if os.path.exists("learning_logs.csv"):
         df = pd.read_csv("learning_logs.csv")
         st.dataframe(df.tail(10))
