@@ -20,10 +20,8 @@ st.markdown("""
 # --- 1. QUẢN LÝ DỮ LIỆU & LOGGING ---
 @st.cache_data
 def load_data():
-    try:
         with open("data.json", "r", encoding="utf-8") as f:
             return json.load(f)
-    except: return {}
 
 def log_action(username, task_name, result, mode_name):
     """Lưu dữ liệu học tập để phục vụ phân tích Data Science"""
