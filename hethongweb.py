@@ -7,27 +7,39 @@ import os
 import pandas as pd
 from datetime import datetime
 
-# --- CONFIG ---
-st.set_page_config(page_title="UTH English Pro v3.9", layout="wide")
-st.markdown("<style>div[data-testid='stSelectbox'], div[data-testid='stRadio'] label, button { cursor: pointer !important; }</style>", unsafe_allow_html=True)
+# --- 1. CẤU HÌNH & CSS ---
+st.set_page_config(page_title="UTH English Pro v4.0", layout="wide")
+st.markdown("<style>button { cursor: pointer !important; } .stTextInput input { font-size: 1.2rem; }</style>", unsafe_allow_html=True)
 
-# --- 1. DATA & LOGGING ---
+# --- 2. QUẢN LÝ DỮ LIỆU ---
 @st.cache_data
 def load_data():
     try:
         with open("data.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        st.error(f"Lỗi nạp file data.json: {e}")
+        st.error(f"Lỗi file data.json: {e}")
         return {}
 
-def log_action(username, task, result, mode):
+def log_action(user, task, result, mode):
     try:
         log_file = "learning_logs.csv"
-        new_entry = {"time": [datetime.now().strftime("%Y-%m-%d %H:%M:%S")], "user": [username], "task": [task], "is_correct": [result], "mode": [mode]}
-        df = pd.DataFrame(new_entry)
+        df = pd.DataFrame([{
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "user": user, "task": task, "is_correct": result, "mode": mode
+        }])
         df.to_csv(log_file, mode='a', header=not os.path.exists(log_file), index=False, encoding="utf-8-sig")
+    except PermissionError:
+        st.warning("⚠️ Hãy đóng file learning_logs.csv trong Excel để lưu kết quả!")
     except: pass
+
+# --- 3. KHỞI TẠO BIẾN TẠM (SESSION STATE) ---
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = True
+    st.session_state.username = "Kiet_Admin"
+
+if 'word_index' not in st.session_state: st.session_state.word_index = 0
+if 'current_word' not in st.session_state: st.session_state.current_word = None
 
 def play_audio(text):
     try:
@@ -35,133 +47,105 @@ def play_audio(text):
         fp = io.BytesIO()
         tts.write_to_fp(fp)
         st.audio(fp)
-    except: st.warning("Không thể phát âm thanh lúc này.")
+    except: st.error("Lỗi âm thanh!")
 
-# --- 2. TẮT ĐĂNG NHẬP ĐỂ DEV ---
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = True 
-    st.session_state.username = "Hi"
-
-if 'current_word' not in st.session_state: st.session_state.current_word = None
-if 'learn_count' not in st.session_state: st.session_state.learn_count = 0
-if 'retry_list' not in st.session_state: st.session_state.retry_list = []
-
-# --- 3. GIAO DIỆN CHÍNH ---
+# --- 4. GIAO DIỆN ---
 data = load_data()
-if not data:
-    st.error("Dữ liệu trống! Kiệt kiểm tra lại file data.json nhé.")
-    st.stop()
-
 with st.sidebar:
-    st.success(f"👤 Sinh viên: {st.session_state.username}")
-    st.divider()
-    mode = st.radio("Chế độ:", ["Học từ vựng", "Trắc nghiệm", "Reading", "Writing", "Analytics"])
+    st.title("🎓 UTH Pro")
+    mode = st.radio("Chế độ:", ["Từ vựng ⌨️", "Trắc nghiệm 📝", "Reading 📖", "Writing ✍️", "Thống kê 📊"])
     level = st.selectbox("Trình độ:", list(data.keys()))
-    if mode == "Học từ vựng ⌨️":
+    if mode == "Từ vựng ⌨️":
         type_mode = st.selectbox("Kiểu học:", ["Anh -> Việt", "Việt -> Anh"])
 
-# --- 4. LOGIC CÁC CHẾ ĐỘ ---
-
-# --- CHẾ ĐỘ TỪ VỰNG (ĐÃ FIX LỖI TRẮNG MÀN HÌNH) ---
-if mode == "Học từ vựng ⌨️":
+# --- 5. LOGIC PHẦN TỪ VỰNG (ĐÃ TỐI ƯU 100%) ---
+if mode == "Từ vựng ⌨️":
     st.header(f"⌨️ Luyện tập: {level}")
-    vocab_list = data[level].get("vocabulary", [])
+    vocab = data[level].get("vocabulary", [])
     
-    if not vocab_list:
-        st.error("Cảnh báo: Trình độ này không có từ vựng nào trong file JSON!")
+    if not vocab:
+        st.warning("Level này trống từ vựng!")
     else:
-        # Chọn từ mới nếu chưa có
+        # CHỌN TỪ: Nếu chưa có từ hoặc vừa làm xong câu trước
         if st.session_state.current_word is None:
-            st.session_state.current_word = random.choice(vocab_list)
+            st.session_state.current_word = random.choice(vocab)
+            st.session_state.word_index += 1 # Dùng để đổi Key, tránh trùng
         
-        word = st.session_state.current_word
+        w = st.session_state.current_word
         
-        # Hiển thị
-        st.write(f"🔉 **IPA:** `{word.get('ipa', 'N/A')}`")
-        if st.button("🔊 Nghe", key="btn_speak"): play_audio(word['en'])
+        # UI HIỂN THỊ
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            st.write(f"🔉 **IPA:** `{w.get('ipa', 'N/A')}`")
+            if st.button("🔊 Nghe"): play_audio(w['en'])
         
-        # Logic câu hỏi
-        if type_mode == "Anh -> Việt":
-            st.subheader(f"Từ tiếng Anh: **{word['en']}**")
-            ans = st.text_input("Nhập nghĩa tiếng Việt:", key=f"input_{word['en']}")
-            correct = word['vn']
-        else:
-            st.subheader(f"Nghĩa tiếng Việt: **{word['vn']}**")
-            ans = st.text_input("Nhập từ tiếng Anh:", key=f"input_{word['vn']}")
-            correct = word['en']
+        with col2:
+            # Tạo Key cực kỳ an toàn bằng cách kết hợp Index và ID từ
+            input_key = f"input_{st.session_state.word_index}_{w['en'][:3]}"
+            
+            if type_mode == "Anh -> Việt":
+                st.subheader(f"Dịch từ: :blue[{w['en']}]")
+                ans = st.text_input("Nhập nghĩa Việt:", key=input_key)
+                correct = w['vn']
+            else:
+                st.subheader(f"Dịch nghĩa: :green[{w['vn']}]")
+                ans = st.text_input("Nhập từ Anh:", key=input_key)
+                correct = w['en']
 
-        if st.button("Kiểm tra", key="btn_check"):
+        # NÚT BẤM
+        c_btn1, c_btn2 = st.columns(2)
+        if c_btn1.button("Kiểm tra ✅", use_container_width=True):
             if ans.strip().lower() == correct.strip().lower():
-                st.success("Chính xác! 🎉")
-                log_action(st.session_state.username, word['en'], 1, "Vocab")
-                st.session_state.current_word = None # Reset để qua từ mới
+                st.balloons()
+                st.success("Quá giỏi Kiệt ơi! 🎉")
+                log_action(st.session_state.username, w['en'], 1, "Vocab")
+                st.session_state.current_word = None # Để vòng lặp sau bốc từ mới
                 st.rerun()
             else:
-                st.error(f"Sai rồi! Đáp án đúng: {correct}")
-                log_action(st.session_state.username, word['en'], 0, "Vocab")
-
-# --- CHẾ ĐỘ TRẮC NGHIỆM ---
-elif mode == "Trắc nghiệm":
-    st.header(f"Trắc nghiệm: {level}")
-    vocab_list = data[level].get("vocabulary", [])
-    if not vocab_list:
-        st.error("Không có dữ liệu trắc nghiệm.")
-    else:
-        if st.session_state.current_word is None:
-            st.session_state.current_word = random.choice(vocab_list)
-        word = st.session_state.current_word
-
-        st.subheader(f"Nghĩa của từ **{word['en']}** là gì?")
-        others = [v['vn'] for v in vocab_list if v['vn'] != word['vn']]
-        distractors = random.sample(others, min(len(others), 3))
-        options = list(set([word['vn']] + distractors))
-        random.shuffle(options)
+                st.error(f"Sai rồi! Đáp án là: **{correct}**")
+                log_action(st.session_state.username, w['en'], 0, "Vocab")
         
-        choice = st.radio("Chọn đáp án:", options, key=f"quiz_{word['en']}")
-        if st.button("Xác nhận câu trả lời"):
-            if choice == word['vn']:
-                st.success("Chuẩn cơm mẹ nấu!")
-                log_action(st.session_state.username, word['en'], 1, "Quiz")
-                st.session_state.current_word = None
-                st.rerun()
-            else:
-                st.error(f"Sai! Đáp án: {word['vn']}")
-                log_action(st.session_state.username, word['en'], 0, "Quiz")
+        if c_btn2.button("Đổi từ khác ⏭️", use_container_width=True):
+            st.session_state.current_word = None
+            st.rerun()
 
-# --- CHẾ ĐỘ READING & WRITING (GIỮ NGUYÊN AUTO-GEN) ---
-elif mode == "Reading":
-    st.header(f"Reading: {level}")
+# --- CÁC CHẾ ĐỘ KHÁC (GIỮ NGUYÊN HOẶC TỰ ĐỘNG GEN) ---
+elif mode == "Trắc nghiệm 📝":
+    st.header("📝 Trắc nghiệm")
+    vocab = data[level].get("vocabulary", [])
+    if vocab:
+        if st.session_state.current_word is None: st.session_state.current_word = random.choice(vocab)
+        q = st.session_state.current_word
+        st.subheader(f"Nghĩa của **{q['en']}** là gì?")
+        # Tự tạo distractors từ nghĩa Việt của các từ khác
+        others = [v['vn'] for v in vocab if v['vn'] != q['vn']]
+        opts = random.sample(others, min(len(others), 3)) + [q['vn']]
+        random.shuffle(opts)
+        choice = st.radio("Chọn:", opts, key=f"q_{st.session_state.word_index}")
+        if st.button("Xác nhận"):
+            if choice == q['vn']:
+                st.success("Đúng!"); log_action(st.session_state.username, q['en'], 1, "Quiz")
+                st.session_state.current_word = None; st.rerun()
+            else: st.error("Sai rồi!"); log_action(st.session_state.username, q['en'], 0, "Quiz")
+
+elif mode == "Reading 📖":
+    st.info("💡 Bài đọc lấy từ data.json...")
     tasks = data[level].get("reading", [])
-    if not tasks:
-        vocab = data[level].get("vocabulary", [])
-        if len(vocab) >= 3:
-            s = random.sample(vocab, 3)
-            st.info(f"💡 Bài đọc tự động: Today, I learned {s[0]['en']}, {s[1]['en']} and {s[2]['en']}.")
-        else: st.warning("Cần thêm từ vựng để tạo bài đọc.")
-    else:
-        st.write(random.choice(tasks)['passage'])
+    if tasks: st.write(random.choice(tasks)['passage'])
+    else: st.warning("Trống dữ liệu Reading.")
 
-elif mode == "Writing":
-    st.header(f"Writing: {level}")
+elif mode == "Writing ✍️":
+    st.info("✍️ Luyện viết câu...")
     tasks = data[level].get("writing", [])
-    if not tasks:
-        vocab = data[level].get("vocabulary", [])
-        if vocab:
-            w = random.choice(vocab)
-            st.subheader(f"Dịch từ: **{w['vn']}**")
-            u = st.text_input("Kết quả:", key=f"write_{w['en']}")
-            if st.button("Check"): st.write(f"Đáp án: {w['en']}")
-        else: st.warning("Trống dữ liệu Writing.")
-    else:
+    if tasks:
         t = random.choice(tasks)
-        st.subheader(f"Dịch: {t['vn_sentence']}")
-        if st.button("Xem đáp án"): st.write(t['en_sentence'])
+        st.write(f"Dịch: {t['vn_sentence']}")
+        if st.button("Xem đáp án"): st.success(t['en_sentence'])
+    else: st.warning("Trống dữ liệu Writing.")
 
-# --- CHẾ ĐỘ ANALYTICS ---
-elif mode == "Analytics":
-    st.header("Thống kê")
+elif mode == "Thống kê 📊":
+    st.header("📊 Kết quả của bạn")
     if os.path.exists("learning_logs.csv"):
         df = pd.read_csv("learning_logs.csv")
-        st.bar_chart(df['mode'].value_counts())
-        st.line_chart(df['is_correct'])
-    else: st.info("Chưa có dữ liệu.")
+        st.dataframe(df.tail(10))
+        st.bar_chart(df['is_correct'].value_counts())
