@@ -41,11 +41,11 @@ def play_audio(text):
 with st.sidebar:
     st.title("🎓 UTH Learning")
     level = st.selectbox("Chọn trình độ:", list(data.keys()))
-    mode = st.radio("Chế độ:", ["Học từ vựng (Gõ phím) ⌨️", "Trắc nghiệm", "Reading", "Writing"])
+    mode = st.radio("Chế độ:", ["Học từ vựng", "Trắc nghiệm", "Reading", "Writing"])
     type_mode = st.selectbox("Kiểu học:", ["Anh -> Việt", "Việt -> Anh"])
 
 # --- CHẾ ĐỘ CHÍNH: HỌC TỪ VỰNG (GÕ PHÍM) ---
-if mode == "Học từ vựng (Gõ phím) ⌨️":
+if mode == "Học từ vựng":
     st.header(f"⌨️ Luyện tập: {level}")
     vocab_list = data[level].get("vocabulary", [])
     
