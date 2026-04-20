@@ -7,7 +7,6 @@ st.set_page_config(page_title="UTH English Pro v3.0", layout="wide")
 # --- QUẢN LÝ DỮ LIỆU ---
 @st.cache_data
 def load_data():
-    # Kiệt chú ý sửa tên file ở đây cho khớp với GitHub nhé
     try:
         with open("data.json", "r", encoding="utf-8") as f:
             return json.load(f)
