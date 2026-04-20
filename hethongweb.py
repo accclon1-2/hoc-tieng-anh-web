@@ -57,7 +57,7 @@ if mode == "Học từ vựng ⌨️":
     ans = st.text_input(f"Dịch từ: {word['en']}")
     if st.button("Kiểm tra"):
         if ans.strip().lower() == word['vn'].strip().lower():
-            st.success("Đúng! 🎉"); log_action(st.session_state.username, word['en'], 1, "Vocab")
+            st.success("Đúng rồi bé ơi! 🎉"); log_action(st.session_state.username, word['en'], 1, "Vocab")
             st.session_state.current_word = None; st.rerun()
         else: st.error(f"Sai! Đáp án: {word['vn']}")
 
