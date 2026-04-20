@@ -14,7 +14,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- QUẢN LÝ DỮ LIỆU ---
-@st.cache_data
+#@st.cache_data
 def load_data():
     try:
         with open("data.json", "r", encoding="utf-8") as f:
