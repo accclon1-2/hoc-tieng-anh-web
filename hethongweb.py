@@ -4,25 +4,12 @@ import random
 from gtts import gTTS
 import io
 
-st.set_page_config(page_title="UTH English Pro v3.1", layout="wide")
+st.set_page_config(page_title="UTH English Pro v3.2", layout="wide")
 
-# --- CSS INJECTION: FIX CON TRỎ CHUỘT ---
-# Đoạn này giúp biến con trỏ thành hình bàn tay khi lia vào các mục tương tác
+# --- CSS: CON TRỎ CHUỘT BÀN TAY ---
 st.markdown("""
     <style>
-    /* Biến con trỏ thành bàn tay cho Selectbox, Radio, Button và các mục click được */
-    div[data-testid="stSelectbox"], 
-    div[data-testid="stRadio"] label, 
-    button, 
-    .stDownloadButton,
-    div[role="button"] {
-        cursor: pointer !important;
-    }
-    /* Hiệu ứng khi di chuột qua các lựa chọn trắc nghiệm */
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover {
-        background-color: #f0f2f6;
-        border-radius: 5px;
-    }
+    div[data-testid="stSelectbox"], div[data-testid="stRadio"] label, button { cursor: pointer !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -32,75 +19,70 @@ def load_data():
     try:
         with open("data.json", "r", encoding="utf-8") as f:
             return json.load(f)
-    except:
-        return {}
+    except: return {}
 
 data = load_data()
 
-# --- GIAO DIỆN MENU ---
+# --- KHỞI TẠO SESSION STATE (BỘ NHỚ TẠM) ---
+if 'retry_list' not in st.session_state:
+    st.session_state.retry_list = [] # Chứa các từ bị sai và số bước chờ
+if 'current_word' not in st.session_state:
+    st.session_state.current_word = None
+if 'learn_count' not in st.session_state:
+    st.session_state.learn_count = 0
+
+def play_audio(text):
+    tts = gTTS(text=text, lang='en')
+    fp = io.BytesIO()
+    tts.write_to_fp(fp)
+    st.audio(fp)
+
+# --- SIDEBAR ---
 with st.sidebar:
     st.title("🎓 UTH Learning")
-    if data:
-        level = st.selectbox("Chọn trình độ:", list(data.keys()))
-        # THÊM CHẾ ĐỘ "HỌC TỪ MỚI" VÀO ĐẦU DANH SÁCH
-        mode = st.radio("Chế độ học:", ["Học từ mới 📖", "Trắc nghiệm từ vựng", "Đọc hiểu (Reading)", "Luyện viết (Writing)"])
-    else:
-        st.warning("Dữ liệu đang trống!")
+    level = st.selectbox("Chọn trình độ:", list(data.keys()))
+    mode = st.radio("Chế độ:", ["Học từ vựng (Gõ phím) ⌨️", "Trắc nghiệm", "Reading", "Writing"])
+    type_mode = st.selectbox("Kiểu học:", ["Anh -> Việt", "Việt -> Anh"])
 
-if data:
+# --- CHẾ ĐỘ CHÍNH: HỌC TỪ VỰNG (GÕ PHÍM) ---
+if mode == "Học từ vựng (Gõ phím) ⌨️":
+    st.header(f"⌨️ Luyện tập: {level}")
     vocab_list = data[level].get("vocabulary", [])
-
-    # --- CHẾ ĐỘ 0: HỌC TỪ MỚI (FLASHCARDS) ---
-    if mode == "Học từ mới 📖":
-        st.header(f"📖 Danh sách từ vựng: {level}")
-        if vocab_list:
-            # Dùng session_state để lưu vị trí từ đang học
-            if 'vocab_idx' not in st.session_state:
-                st.session_state.vocab_idx = 0
-            
-            idx = st.session_state.vocab_idx
-            word = vocab_list[idx]
-
-            # Hiển thị Card từ vựng
-            st.markdown(f"""
-                <div style="background-color: white; padding: 30px; border-radius: 15px; border-left: 10px solid #FF4B4B; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
-                    <h1 style="color: #1E1E1E; margin-bottom: 0;">{word['en']}</h1>
-                    <p style="color: #666; font-size: 20px;">{word['vn']}</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-            # Nút điều hướng
-            col1, col2, col3 = st.columns([1, 1, 4])
-            with col1:
-                if st.button("⬅️ Trước"):
-                    st.session_state.vocab_idx = max(0, idx - 1)
-                    st.rerun()
-            with col2:
-                if st.button("Sau ➡️"):
-                    st.session_state.vocab_idx = min(len(vocab_list) - 1, idx + 1)
-                    st.rerun()
-            
-            st.write(f"Tiến độ: {idx + 1} / {len(vocab_list)}")
-        else:
-            st.info("Chưa có từ vựng để học.")
-
-    # --- CHẾ ĐỘ 1: TRẮC NGHIỆM ---
-    elif mode == "Trắc nghiệm từ vựng":
-        st.header("📝 Trắc nghiệm nhanh")
-        if vocab_list:
-            # Chọn ngẫu nhiên một từ để kiểm tra
-            word = random.choice(vocab_list)
-            st.subheader(f"Nghĩa của từ là: {word['vn']}")
-            
-            options = word.get('distractors', []) + [word['en']]
-            random.shuffle(options)
-            
-            ans = st.radio("Chọn đáp án tiếng Anh đúng:", options)
-            if st.button("Nộp bài"):
-                if ans == word['en']:
-                    st.success("Chính xác! 🎉")
-                    st.balloons()
-                else:
-                    st.error(f"Sai rồi. Đáp án đúng là: {word['en']}")
     
-    # ... (Các chế độ khác giữ nguyên) ...
+    # Logic thuật toán nhắc lại: Sau 2-3 từ, nếu có từ sai thì ưu tiên hiện lại
+    if st.session_state.retry_list and st.session_state.learn_count >= 3:
+        word = st.session_state.retry_list.pop(0)
+        st.session_state.learn_count = 0 # Reset đếm
+        st.info("🔄 Nhắc lại từ bạn đã làm sai:")
+    else:
+        if not st.session_state.current_word:
+            st.session_state.current_word = random.choice(vocab_list)
+        word = st.session_state.current_word
+
+    # Hiển thị IPA và Phát âm
+    st.write(f"🔉 **Phiên âm:** `{word.get('ipa', 'N/A')}`")
+    if st.button("🔊 Nghe phát âm"):
+        play_audio(word['en'])
+
+    # Giao diện câu hỏi
+    if type_mode == "Anh -> Việt":
+        st.subheader(f"Từ tiếng Anh: **{word['en']}**")
+        answer = st.text_input("Nhập nghĩa tiếng Việt:", key="input_vn")
+        correct_ans = word['vn']
+    else:
+        st.subheader(f"Nghĩa tiếng Việt: **{word['vn']}**")
+        answer = st.text_input("Nhập từ tiếng Anh:", key="input_en")
+        correct_ans = word['en']
+
+    if st.button("Kiểm tra"):
+        if answer.strip().lower() == correct_ans.strip().lower():
+            st.success(f"Chính xác! 🎉")
+            st.session_state.learn_count += 1
+            st.session_state.current_word = None # Đổi từ mới
+            st.rerun()
+        else:
+            st.error(f"Sai rồi! Đáp án đúng: {correct_ans}")
+            st.info(f"💡 Ghi nhớ: {word['en']} - {word['vn']} {word.get('ipa', '')}")
+            # Thêm vào hàng đợi nhắc lại sau 3 câu
+            if word not in st.session_state.retry_list:
+                st.session_state.retry_list.append(word)
