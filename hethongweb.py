@@ -14,8 +14,12 @@ st.markdown("<style>div[data-testid='stSelectbox'], div[data-testid='stRadio'] l
 # --- 1. DATA & LOGGING ---
 @st.cache_data
 def load_data():
+      try:
         with open("data.json", "r", encoding="utf-8") as f:
             return json.load(f)
+    except Exception as e:
+        st.error(f"Lỗi nạp file data.json: {e}")
+        return {}
 
 def log_action(username, task, result, mode):
     log_file = "learning_logs.csv"
