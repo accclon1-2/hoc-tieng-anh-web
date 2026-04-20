@@ -71,7 +71,7 @@ with st.sidebar:
         st.rerun()
     st.divider()
     st.title("🎓 Menu")
-    mode = st.radio("Chế độ:", ["Học từ vựng ⌨️", "Trắc nghiệm 📝", "Thống kê (Analytics) 📊"])
+    mode = st.radio("Chế độ:", ["Học từ vựng", "Trắc nghiệm", "Thống kê (Analytics) 📊"])
     
     if mode != "Thống kê (Analytics) 📊":
         level = st.selectbox("Chọn trình độ:", list(data.keys()))
