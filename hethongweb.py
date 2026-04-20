@@ -134,14 +134,16 @@ elif mode == "Trắc nghiệm":
 
 # --- CHẾ ĐỘ: READING (BẢN MẪU) ---
 elif mode == "Reading":
-    st.header("Luyện kỹ năng Đọc")
+    st.header("Luyện kỹ năng Đọc: {level}")
     reading_tasks = data[level].get("reading", [])
     if reading_tasks:
         task = random.choice(reading_tasks)
-        st.info(task.get("passage", "Đang cập nhật đoạn văn..."))
-        # Thêm câu hỏi đọc hiểu ở đây
+        st.markdown("---")
+        st.subheader("Đoạn văn:")
+        st.write(task['passage']) # Hiển thị đoạn văn
+        st.markdown("---")
     else:
-        st.warning("Kiệt ơi, phần Reading trong data.json của bạn đang trống. Hãy nạp thêm nhé!")
+        st.warning("Hiện tại trình độ này chưa có bài đọc.")
 
 # --- CHẾ ĐỘ: WRITING (BẢN MẪU) ---
 elif mode == "Writing":
