@@ -2,8 +2,11 @@
   "Level_A1 (Cơ bản)": [
     {
       "prompt": "Sắp xếp câu: like / I / learning / English",
-      "scrambled": "like / I / learning / English",
       "answer": "I like learning English"
+    },
+    {
+      "prompt": "Dịch sang tiếng Anh: Con mèo đang ngủ trên giường.",
+      "answer": "The cat is sleeping on the bed"
     }
   ]
 }
