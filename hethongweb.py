@@ -7,145 +7,170 @@ import os
 import pandas as pd
 from datetime import datetime
 
-# --- 1. CẤU HÌNH & CSS ---
-st.set_page_config(page_title="UTH English Pro v4.0", layout="wide")
-st.markdown("<style>button { cursor: pointer !important; } .stTextInput input { font-size: 1.2rem; }</style>", unsafe_allow_html=True)
+# --- CONFIG & CSS ---
+st.set_page_config(page_title="UTH English Pro v5.1", layout="wide")
+st.markdown("<style>button { cursor: pointer !important; }</style>", unsafe_allow_html=True)
 
-# --- 2. QUẢN LÝ DỮ LIỆU ---
+# --- 1. QUẢN LÝ DỮ LIỆU (TÁCH 4 FILE) ---
 @st.cache_data
-def load_data():
-    try:
-        with open("data.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception as e:
-        st.error(f"Lỗi file data.json: {e}")
-        return {}
+def load_all_data():
+    files = {
+        "vocab": "vocab.json",
+        "quiz": "quiz.json",
+        "read": "reading.json",
+        "write": "writing.json"
+    }
+    data_bundle = {}
+    for key, filename in files.items():
+        try:
+            with open(filename, "r", encoding="utf-8") as f:
+                data_bundle[key] = json.load(f)
+        except:
+            data_bundle[key] = {} # Trả về trống nếu file lỗi/không tồn tại
+    return data_bundle
 
 def log_action(user, task, result, mode):
-    try:
-        log_file = "learning_logs.csv"
-        df = pd.DataFrame([{
-            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "user": user, "task": task, "is_correct": result, "mode": mode
-        }])
-        df.to_csv(log_file, mode='a', header=not os.path.exists(log_file), index=False, encoding="utf-8-sig")
-    except PermissionError:
-        st.warning("⚠️ Hãy đóng file learning_logs.csv trong Excel để lưu kết quả!")
-    except: pass
+    log_file = "learning_logs.csv"
+    df = pd.DataFrame([{"time": datetime.now(), "user": user, "task": task, "is_correct": result, "mode": mode}])
+    df.to_csv(log_file, mode='a', header=not os.path.exists(log_file), index=False, encoding="utf-8-sig")
 
-# --- 3. KHỞI TẠO BIẾN TẠM (SESSION STATE) ---
+# --- 2. KHỞI TẠO SESSION STATE ---
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = True
-    st.session_state.username = "Hi"
+    st.session_state.username = "Kiệt_Admin"
 
-if 'word_index' not in st.session_state: st.session_state.word_index = 0
-if 'current_word' not in st.session_state: st.session_state.current_word = None
+# Các biến quan trọng để giữ trạng thái câu hỏi
+initial_states = {
+    'current_task': None,       # Lưu đối tượng câu hỏi hiện tại
+    'fixed_options': [],        # Giữ nguyên 4 đáp án cho tới khi xong câu
+    'fixed_sentence': "",       # Giữ câu đục lỗ cố định
+    'prev_type_mode': None,     # Theo dõi để đổi từ khi đổi Anh-Việt
+    'prev_mode': None,          # Theo dõi để đổi từ khi đổi Chế độ
+    'prev_level': None          # Theo dõi để đổi từ khi đổi Trình độ
+}
+for key, val in initial_states.items():
+    if key not in st.session_state: st.session_state[key] = val
 
-def play_audio(text):
-    try:
-        tts = gTTS(text=text, lang='en')
-        fp = io.BytesIO()
-        tts.write_to_fp(fp)
-        st.audio(fp)
-    except: st.error("Lỗi âm thanh!")
-
-# --- 4. GIAO DIỆN ---
-data = load_data()
+# --- 3. SIDEBAR ---
+bundle = load_all_data()
 with st.sidebar:
-    st.title("🎓 UTH Pro")
+    st.title("🎓 UTH Pro v5.1")
     mode = st.radio("Chế độ:", ["Từ vựng", "Trắc nghiệm", "Reading", "Writing", "Thống kê"])
-    level = st.selectbox("Trình độ:", list(data.keys()))
-    if mode == "Từ vựng":
-        type_mode = st.selectbox("Kiểu học:", ["Anh -> Việt", "Việt -> Anh"])
-
-# --- 5. LOGIC PHẦN TỪ VỰNG (ĐÃ TỐI ƯU 100%) ---
-if mode == "Từ vựng":
-    st.header(f"Luyện tập: {level}")
-    vocab = data[level].get("vocabulary", [])
     
-    if not vocab:
-        st.warning("Level này trống từ vựng!")
-    else:
-        # CHỌN TỪ: Nếu chưa có từ hoặc vừa làm xong câu trước
-        if st.session_state.current_word is None:
-            st.session_state.current_word = random.choice(vocab)
-            st.session_state.word_index += 1 # Dùng để đổi Key, tránh trùng
-        
-        w = st.session_state.current_word
-        
-        # UI HIỂN THỊ
-        col1, col2 = st.columns([1, 3])
-        with col1:
-            st.write(f"🔉 **IPA:** `{w.get('ipa', 'N/A')}`")
-            if st.button("🔊 Nghe"): play_audio(w['en'])
-        
-        with col2:
-            # Tạo Key cực kỳ an toàn bằng cách kết hợp Index và ID từ
-            input_key = f"input_{st.session_state.word_index}_{w['en'][:3]}"
-            
-            if type_mode == "Anh -> Việt":
-                st.subheader(f"Dịch từ: :blue[{w['en']}]")
-                ans = st.text_input("Nhập nghĩa Việt:", key=input_key)
-                correct = w['vn']
-            else:
-                st.subheader(f"Dịch nghĩa: :green[{w['vn']}]")
-                ans = st.text_input("Nhập từ Anh:", key=input_key)
-                correct = w['en']
+    # Lấy danh sách Level từ file vocab (làm chuẩn)
+    levels = list(bundle['vocab'].keys()) if bundle['vocab'] else ["Level_A1"]
+    level = st.selectbox("Trình độ:", levels)
+    
+    # RESET KHI ĐỔI MODE HOẶC LEVEL
+    if st.session_state.prev_mode != mode or st.session_state.prev_level != level:
+        st.session_state.current_task = None
+        st.session_state.prev_mode = mode
+        st.session_state.prev_level = level
+        st.rerun()
 
-        # NÚT BẤM
-        c_btn1, c_btn2 = st.columns(2)
-        if c_btn1.button("Kiểm tra", use_container_width=True):
+# --- 4. LOGIC CHẾ ĐỘ ---
+
+# 4.1 TỪ VỰNG: Fix lỗi "Đổi kiểu học không đổi từ"
+if mode == "Từ vựng":
+    type_mode = st.selectbox("Kiểu học:", ["Anh -> Việt", "Việt -> Anh"])
+    if st.session_state.prev_type_mode != type_mode:
+        st.session_state.current_task = None # Buộc đổi từ khi đổi kiểu học
+        st.session_state.prev_type_mode = type_mode
+        st.rerun()
+
+    vocab_list = bundle['vocab'].get(level, {}).get("vocabulary", [])
+    if vocab_list:
+        if st.session_state.current_task is None:
+            st.session_state.current_task = random.choice(vocab_list)
+        
+        w = st.session_state.current_task
+        st.subheader(f"Luyện tập từ vựng: {level}")
+        st.write(f"IPA: `{w.get('ipa', 'N/A')}`")
+        
+        if type_mode == "Anh -> Việt":
+            st.info(f"Dịch từ: **{w['en']}**")
+            ans = st.text_input("Nhập nghĩa tiếng Việt:", key=f"v_{w['en']}")
+            correct = w['vn']
+        else:
+            st.info(f"Nghĩa là: **{w['vn']}**")
+            ans = st.text_input("Nhập từ tiếng Anh:", key=f"v_{w['vn']}")
+            correct = w['en']
+
+        if st.button("Kiểm tra"):
             if ans.strip().lower() == correct.strip().lower():
-                st.balloons()
-                st.success("Chuẩn cơm mẹ nấu!")
-                log_action(st.session_state.username, w['en'], 1, "Vocab")
-                st.session_state.current_word = None # Để vòng lặp sau bốc từ mới
-                st.rerun()
-            else:
-                st.error(f"Sai rồi! Đáp án là: **{correct}**")
-                log_action(st.session_state.username, w['en'], 0, "Vocab")
-        
-        if c_btn2.button("Đổi từ khác", use_container_width=True):
-            st.session_state.current_word = None
-            st.rerun()
+                st.success("Tày vậy!"); log_action(st.session_state.username, w['en'], 1, "Vocab")
+                st.session_state.current_task = None; st.rerun()
+            else: st.error(f"Chưa Tày đâu. Đáp án: {correct}")
 
-# --- CÁC CHẾ ĐỘ KHÁC (GIỮ NGUYÊN HOẶC TỰ ĐỘNG GEN) ---
+# 4.2 TRẮC NGHIỆM: Fix lỗi "Nhảy đáp án" & Đục lỗ theo 3 dạng
 elif mode == "Trắc nghiệm":
-    st.header("Trắc nghiệm")
-    vocab = data[level].get("vocabulary", [])
-    if vocab:
-        if st.session_state.current_word is None: st.session_state.current_word = random.choice(vocab)
-        q = st.session_state.current_word
-        st.subheader(f"Nghĩa của **{q['en']}** là gì?")
-        # Tự tạo distractors từ nghĩa Việt của các từ khác
-        others = [v['vn'] for v in vocab if v['vn'] != q['vn']]
-        opts = random.sample(others, min(len(others), 3)) + [q['vn']]
-        random.shuffle(opts)
-        choice = st.radio("Chọn:", opts, key=f"q_{st.session_state.word_index}")
+    st.subheader("Trắc nghiệm ngữ cảnh (Cloze Test)")
+    quiz_list = bundle['quiz'].get(level, [])
+    
+    if quiz_list:
+        if st.session_state.current_task is None:
+            q = random.choice(quiz_list)
+            st.session_state.current_task = q
+            st.session_state.fixed_sentence = q['sentence']
+            # Trộn đáp án 1 lần duy nhất và lưu vào session
+            opts = q['options']
+            random.shuffle(opts)
+            st.session_state.fixed_options = opts
+        
+        q = st.session_state.current_task
+        st.info(f"Điền vào chỗ trống: \n\n **{st.session_state.fixed_sentence}**")
+        
+        # Đáp án luôn cố định nhờ session_state
+        user_choice = st.radio("Chọn từ đúng:", st.session_state.fixed_options, key="q_radio")
+        
         if st.button("Xác nhận"):
-            if choice == q['vn']:
-                st.success("Đúng!"); log_action(st.session_state.username, q['en'], 1, "Quiz")
-                st.session_state.current_word = None; st.rerun()
-            else: st.error("Sai rồi!"); log_action(st.session_state.username, q['en'], 0, "Quiz")
+            if user_choice == q['answer']:
+                st.success("Chuẩn Cơm Mẹ Nấu!"); log_action(st.session_state.username, q['answer'], 1, "Quiz")
+                st.session_state.current_task = None; st.rerun()
+            else: st.error("Thử lại nhó!")
 
+# 4.3 READING: Cấu trúc bài đọc chuyên nghiệp
 elif mode == "Reading":
-    st.info("💡 Bài đọc lấy từ data.json...")
-    tasks = data[level].get("reading", [])
-    if tasks: st.write(random.choice(tasks)['passage'])
-    else: st.warning("Trống dữ liệu Reading.")
+    st.subheader("Đọc hiểu văn bản")
+    read_list = bundle['read'].get(level, [])
+    if read_list:
+        if st.session_state.current_task is None:
+            st.session_state.current_task = random.choice(read_list)
+        
+        r = st.session_state.current_task
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f"**Nguồn:** {r.get('source', 'UTH Exam')}")
+            st.text_area("Văn bản:", r['passage'], height=350)
+        with col2:
+            st.write("Câu hỏi:")
+            for i, quest in enumerate(r['questions']):
+                st.radio(f"{i+1}. {quest['q']}", quest['options'], key=f"r_q_{i}")
+        if st.button("Nộp bài đọc"):
+            st.session_state.current_task = None; st.rerun()
 
+# 4.4 WRITING: Sắp xếp câu/Dịch thuật
 elif mode == "Writing":
-    st.info("Luyện viết câu...")
-    tasks = data[level].get("writing", [])
-    if tasks:
-        t = random.choice(tasks)
-        st.write(f"Dịch: {t['vn_sentence']}")
-        if st.button("Xem đáp án"): st.success(t['en_sentence'])
-    else: st.warning("Trống dữ liệu Writing.")
+    st.subheader("Luyện kỹ năng viết")
+    write_list = bundle['write'].get(level, [])
+    if write_list:
+        if st.session_state.current_task is None:
+            st.session_state.current_task = random.choice(write_list)
+        
+        task = st.session_state.current_task
+        st.write(f"Đề bài: **{task['prompt']}**")
+        if 'scrambled' in task: st.warning(f"Từ gợi ý: {task['scrambled']}")
+        
+        user_write = st.text_input("Viết câu hoàn chỉnh tại đây:", key="w_input")
+        if st.button("Kiểm tra câu viết"):
+            if user_write.strip().lower() == task['answer'].strip().lower():
+                st.success("Viết rất tốt!"); st.session_state.current_task = None
+            else: st.info(f"Gợi ý đáp án: {task['answer']}")
 
+# 4.5 THỐNG KÊ
 elif mode == "Thống kê":
-    st.header("Kết quả của bạn")
+    st.subheader("Kết quả học tập")
     if os.path.exists("learning_logs.csv"):
         df = pd.read_csv("learning_logs.csv")
-        st.dataframe(df.tail(10))
-        st.bar_chart(df['is_correct'].value_counts())
+        st.line_chart(df['is_correct'].tail(20))
+        st.dataframe(df.tail(10), use_container_width=True)
