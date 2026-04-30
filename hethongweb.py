@@ -1,5 +1,4 @@
 ### 2. Full Code `hethongweb.py` (v5.2 - Siêu ổn định)
-```python
 import streamlit as st
 import json
 import random
