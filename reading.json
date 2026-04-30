@@ -1,7 +1,20 @@
 {
-  "Level_A1 (Cơ bản)": [{
-      "source": "British Council",
-      "passage": "John is a student at UTH. He lives in Ho Chi Minh City.",
-      "questions": [{"q": "Where does John live?", "options": ["Hanoi", "HCM City", "Danang"], "a": "HCM City"}]
-  }]
+  "Level_A1 (Cơ bản)": [
+    {
+      "source": "Oxford Learner Library",
+      "passage": "My name is John. I am a student at UTH. I love my university and my major is Data Science.",
+      "questions": [
+        {
+          "q": "What is John's job?",
+          "options": ["Student", "Doctor", "Teacher"],
+          "a": "Student"
+        },
+        {
+          "q": "What is his major?",
+          "options": ["AI", "Data Science", "Math"],
+          "a": "Data Science"
+        }
+      ]
+    }
+  ]
 }
