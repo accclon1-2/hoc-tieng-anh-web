@@ -1,11 +1,7 @@
 {
-  "Level_A1": [
-    {
-      "source": "Oxford Learner Library",
-      "passage": "My name is John. I am a student at UTH...",
-      "questions": [
-        {"q": "What is John's job?", "options": ["Student", "Doctor", "Teacher"], "a": "Student"}
-      ]
-    }
-  ]
+  "Level_A1": [{
+      "source": "British Council",
+      "passage": "John is a student at UTH. He lives in Ho Chi Minh City.",
+      "questions": [{"q": "Where does John live?", "options": ["Hanoi", "HCM City", "Danang"], "a": "HCM City"}]
+  }]
 }
