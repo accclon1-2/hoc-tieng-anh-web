@@ -1,0 +1,14 @@
+{
+  "Level_A1": [
+    {
+      "sentence": "A vehicle with four wheels that carries people: ____.",
+      "options": ["car", "bike", "bus", "train"],
+      "answer": "car"
+    },
+    {
+      "sentence": "I usually ____ bread and milk for breakfast.",
+      "options": ["eat", "run", "sleep", "look"],
+      "answer": "eat"
+    }
+  ]
+}
