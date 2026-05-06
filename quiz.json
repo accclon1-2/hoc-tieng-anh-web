@@ -9,6 +9,36 @@
       "sentence": "I usually ____ bread and milk for breakfast.",
       "options": ["eat", "run", "sleep", "look"],
       "answer": "eat"
+    },
+    {
+      "sentence": "Minh is a freshman studying ____ at UTH.",
+      "options": ["Information Technology", "Medicine", "Art", "Music"],
+      "answer": "Information Technology"
+    },
+    {
+      "sentence": "Place where people usually sleep: ____.",
+      "options": ["bed", "kitchen", "park", "garden"],
+      "answer": "bed"
+    },
+    {
+      "sentence": "Python has a ____ that is easy to read.",
+      "options": ["syntax", "hardware", "keyboard", "mouse"],
+      "answer": "syntax"
+    },
+    {
+      "sentence": "A robot that cleans the room automatically: ____.",
+      "options": ["vacuum cleaner", "washing machine", "fridge", "lamp"],
+      "answer": "vacuum cleaner"
+    },
+    {
+      "sentence": "Every weekend, I spend time ____ my fiction novel.",
+      "options": ["writing", "eating", "running", "driving"],
+      "answer": "writing"
+    },
+    {
+      "sentence": "Intel is a famous company known for its ____ milestones.",
+      "options": ["computer architecture", "fashion", "cooking", "music"],
+      "answer": "computer architecture"
     }
   ]
 }
