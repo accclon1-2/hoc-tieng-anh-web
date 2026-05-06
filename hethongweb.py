@@ -8,7 +8,7 @@ import io
 from datetime import datetime
 
 # --- CONFIG ---
-st.set_page_config(page_title="UTH English Pro v5.5", layout="wide")
+st.set_page_config(page_title="UTH English Pro v5.6", layout="wide")
 st.markdown("<style>button { cursor: pointer !important; }</style>", unsafe_allow_html=True)
 
 # --- 1. QUẢN LÝ DỮ LIỆU & ÂM THANH ---
@@ -26,7 +26,7 @@ def load_all_data():
     return bundle
 
 def play_audio(text):
-    """Hàm tạo âm thanh từ văn bản dùng gTTS"""
+    """Hàm tạo âm thanh chuẩn dùng gTTS"""
     try:
         tts = gTTS(text=text, lang='en')
         fp = io.BytesIO()
@@ -72,7 +72,7 @@ with st.sidebar:
 
 # --- 4. LOGIC CHẾ ĐỘ ---
 
-# 4.1 TỪ VỰNG (ĐÃ THÊM LẠI IPA VÀ PHÁT ÂM)
+# 4.1 TỪ VỰNG
 if mode == "Từ vựng":
     type_mode = st.selectbox("Kiểu học:", ["Anh -> Việt", "Việt -> Anh"])
     if st.session_state.prev_type != type_mode:
@@ -81,19 +81,17 @@ if mode == "Từ vựng":
     v_data = get_content(bundle['vocab'], level)
     v_list = v_data.get("vocabulary", []) if v_data else []
     
-    if not v_list: st.warning(f"Trống từ vựng trong vocab.json")
+    if not v_list: st.warning("Trống từ vựng trong vocab.json")
     else:
         if st.session_state.current_task is None: st.session_state.current_task = random.choice(v_list)
         w = st.session_state.current_task
         
         st.subheader(f"Luyện tập: {level}")
-        
-        # --- KHỐI IPA VÀ AUDIO ---
         col_info, col_audio = st.columns([3, 1])
         with col_info:
-            st.markdown(f"**IPA:** `{w.get('ipa', 'N/A')}`")[cite: 3]
+            st.markdown(f"**IPA:** `{w.get('ipa', 'N/A')}`")
         with col_audio:
-            if st.button("Nghe"): play_audio(w['en'])
+            if st.button("🔊 Nghe"): play_audio(w['en'])
         
         q_label = f"Dịch: **{w['en']}**" if type_mode == "Anh -> Việt" else f"Nghĩa là: **{w['vn']}**"
         correct = w['vn'] if type_mode == "Anh -> Việt" else w['en']
@@ -109,7 +107,7 @@ if mode == "Từ vựng":
 # 4.2 TRẮC NGHIỆM
 elif mode == "Trắc nghiệm":
     q_list = get_content(bundle['quiz'], level)
-    if not q_list: st.warning(f"Trống câu hỏi trong quiz.json")
+    if not q_list: st.warning("Trống câu hỏi trong quiz.json")
     else:
         if st.session_state.current_task is None:
             q = random.choice(q_list)
@@ -120,7 +118,7 @@ elif mode == "Trắc nghiệm":
         
         q = st.session_state.current_task
         with st.form("quiz_form"):
-            st.info(f"Điền vào chỗ trống: \n\n **{q['sentence']}**")[cite: 4]
+            st.info(f"Điền vào chỗ trống: \n\n **{q['sentence']}**")
             choice = st.radio("Chọn đáp án:", st.session_state.options)
             if st.form_submit_button("Xác nhận câu trả lời"):
                 if choice == q['answer']:
@@ -130,19 +128,19 @@ elif mode == "Trắc nghiệm":
 # 4.3 READING
 elif mode == "Reading":
     r_list = get_content(bundle['read'], level)
-    if not r_list: st.warning(f"Trống bài đọc trong reading.json")
+    if not r_list: st.warning("Trống bài đọc trong reading.json")
     else:
         if st.session_state.current_task is None: st.session_state.current_task = random.choice(r_list)
         r = st.session_state.current_task
         col1, col2 = st.columns([2, 1])
         with col1:
-            st.markdown(f"**Nguồn:** {r.get('source', 'Unknown')}")[cite: 4]
-            st.text_area("Văn bản:", r['passage'], height=300)[cite: 4]
+            st.markdown(f"**Nguồn:** {r.get('source', 'Unknown')}")
+            st.text_area("Văn bản:", r['passage'], height=300)
         with col2:
             with st.form("reading_form"):
                 u_ans = []
                 for i, q_item in enumerate(r['questions']):
-                    u_ans.append(st.radio(f"{i+1}. {q_item['q']}", q_item['options'], key=f"rd_{i}"))[cite: 4]
+                    u_ans.append(st.radio(f"{i+1}. {q_item['q']}", q_item['options'], key=f"rd_{i}"))
                 if st.form_submit_button("Nộp bài đọc"):
                     correct = sum(1 for i, q_item in enumerate(r['questions']) if u_ans[i] == q_item['a'])
                     st.session_state.score_feedback = f"Kết quả: {correct}/{len(r['questions'])} câu đúng."
@@ -153,20 +151,20 @@ elif mode == "Reading":
 # 4.4 WRITING
 elif mode == "Writing":
     w_list = get_content(bundle['write'], level)
-    if not w_list: st.warning(f"Trống dữ liệu trong writing.json")
+    if not w_list: st.warning("Trống dữ liệu trong writing.json")
     else:
         if st.session_state.current_task is None: st.session_state.current_task = random.choice(w_list)
         t = st.session_state.current_task
         with st.form("write_form"):
-            st.subheader(f"Đề bài: {t['prompt']}")[cite: 4]
+            st.subheader(f"Đề bài: {t['prompt']}")
             user_w = st.text_input("Viết tại đây:")
-            if st.form_submit_button("Kiểm tra "):
+            if st.form_submit_button("Kiểm tra"):
                 if user_w.strip().lower() == t['answer'].strip().lower():
                     st.success("Viết rất tốt!"); reset_task(); st.rerun()
-                else: st.info(f"Gợi ý: {t['answer']}")[cite: 4]
+                else: st.info(f"Gợi ý: {t['answer']}")
         if st.button("Đổi câu khác"): reset_task(); st.rerun()
 
 # 4.5 THỐNG KÊ
 elif mode == "Thống kê":
     st.header("Thống kê học tập")
-    st.write("Sẵn sàng để Kiệt nạp thêm log dữ liệu tại đây!")
+    st.write("Dữ liệu sẽ được cập nhật khi bạn lưu log.")
