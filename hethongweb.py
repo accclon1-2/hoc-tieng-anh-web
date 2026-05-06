@@ -8,7 +8,7 @@ import io
 from datetime import datetime
 
 # --- CONFIG ---
-st.set_page_config(page_title="UTH English Pro v5.6", layout="wide")
+st.set_page_config(page_title="UTH English Pro v5.4", layout="wide")
 st.markdown("<style>button { cursor: pointer !important; }</style>", unsafe_allow_html=True)
 
 # --- 1. QUẢN LÝ DỮ LIỆU & ÂM THANH ---
