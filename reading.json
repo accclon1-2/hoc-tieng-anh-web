@@ -1,19 +1,83 @@
 {
   "Level_A1 (Cơ bản)": [
     {
-      "source": "Oxford Learner Library",
-      "passage": "My name is John. I am a student at UTH. I love my university and my major is Data Science.",
+      "source": "UTH IT Department",
+      "passage": "Hi, I am Minh. I am a freshman studying Information Technology. My dream is to become a software engineer. I spend a lot of time writing code in Python and C++.",
       "questions": [
-        {
-          "q": "What is John's job?",
-          "options": ["Student", "Doctor", "Teacher"],
-          "a": "Student"
-        },
-        {
-          "q": "What is his major?",
-          "options": ["AI", "Data Science", "Math"],
-          "a": "Data Science"
-        }
+        {"q": "What is Minh studying?", "options": ["Business", "Information Technology", "Medicine"], "a": "Information Technology"},
+        {"q": "What is his dream job?", "options": ["Software engineer", "Doctor", "Teacher"], "a": "Software engineer"}
+      ]
+    },
+    {
+      "source": "Student Project News",
+      "passage": "My team is building a smart robot vacuum cleaner. We named it 'Megatron'. It uses artificial intelligence to navigate and clean the room automatically. We use cardboard to make the prototype.",
+      "questions": [
+        {"q": "What is the name of the robot?", "options": ["Optimus", "Megatron", "Ultron"], "a": "Megatron"},
+        {"q": "What material do they use for the prototype?", "options": ["Plastic", "Metal", "Cardboard"], "a": "Cardboard"}
+      ]
+    },
+    {
+      "source": "Student Life Magazine",
+      "passage": "After a long day of studying, I like to relax by playing video games. My favorite game is Cyberpunk 2077 because of its amazing graphics and futuristic story. Sometimes, I play competitive games like Counter-Strike 2 with my classmates.",
+      "questions": [
+        {"q": "What does the writer do to relax?", "options": ["Read novels", "Play video games", "Listen to music"], "a": "Play video games"},
+        {"q": "Why do they like Cyberpunk 2077?", "options": ["It is cheap", "It has amazing graphics", "It is a multiplayer game"], "a": "It has amazing graphics"}
+      ]
+    },
+    {
+      "source": "Academic Presentation Center",
+      "passage": "We have a group presentation next week about computer architecture. There are eight members in my group. Lan and Minh are researching the history, while I am working on the slide design.",
+      "questions": [
+        {"q": "What is the presentation about?", "options": ["Computer architecture", "Data Science", "English grammar"], "a": "Computer architecture"},
+        {"q": "How many members are there in the group?", "options": ["Six", "Eight", "Nine"], "a": "Eight"}
+      ]
+    },
+    {
+      "source": "Tech Team Blog",
+      "passage": "Our team is working on a new software application. Trang is designing the user interface, Huy is writing the backend code, and Diễm is testing the application to find bugs. We have a meeting every Tuesday to discuss our progress.",
+      "questions": [
+        {"q": "What is Diễm doing in the project?", "options": ["Designing the user interface", "Writing backend code", "Testing the application"], "a": "Testing the application"},
+        {"q": "When does the team meet?", "options": ["Monday", "Tuesday", "Friday"], "a": "Tuesday"}
+      ]
+    },
+    {
+      "source": "Travel Planner",
+      "passage": "I am planning a trip to Japan next year. I want to visit Tokyo first to see the modern city. Then, I will take a train to Kyoto to explore traditional temples. Finally, I will go to Osaka to enjoy the delicious street food.",
+      "questions": [
+        {"q": "Where will the person go first?", "options": ["Osaka", "Kyoto", "Tokyo"], "a": "Tokyo"},
+        {"q": "Why do they want to visit Osaka?", "options": ["To see traditional temples", "To enjoy street food", "To see the modern city"], "a": "To enjoy street food"}
+      ]
+    },
+    {
+      "source": "Programming for Beginners",
+      "passage": "Learning computer programming can be challenging but fun. I started with Python because its syntax is easy to read. Now, I am learning C++ and Assembly to understand how hardware works at a lower level.",
+      "questions": [
+        {"q": "Why did the writer start with Python?", "options": ["It is very old", "Its syntax is easy to read", "It is for hardware"], "a": "Its syntax is easy to read"},
+        {"q": "Which language helps the writer understand hardware?", "options": ["Python", "Assembly", "Java"], "a": "Assembly"}
+      ]
+    },
+    {
+      "source": "Literature Club",
+      "passage": "Every weekend, I spend a few hours writing my fiction novel. The story is set in a cold, northern environment covered in deep snow. It is about a young traveler trying to survive the harsh winter.",
+      "questions": [
+        {"q": "When does the writer usually work on the novel?", "options": ["Every day", "Every weekend", "Once a month"], "a": "Every weekend"},
+        {"q": "What is the setting of the story?", "options": ["A hot desert", "A tropical island", "A cold, northern snowy environment"], "a": "A cold, northern snowy environment"}
+      ]
+    },
+    {
+      "source": "Computer History Project",
+      "passage": "Last month, my class had a research project about the history of computer architecture. We focused on Intel's milestones and did a comparative analysis of different CPU generations over the past decades.",
+      "questions": [
+        {"q": "What was the research project about?", "options": ["Software development", "History of computer architecture", "Network security"], "a": "History of computer architecture"},
+        {"q": "Which company's milestones did they focus on?", "options": ["AMD", "Apple", "Intel"], "a": "Intel"}
+      ]
+    },
+    {
+      "source": "UTH Student Life",
+      "passage": "The Ho Chi Minh City University of Transport (UTH) has a very active student life. Many students join clubs related to their majors. As an IT student, I spend most of my time in the computer labs working on coding assignments.",
+      "questions": [
+        {"q": "Which university is mentioned in the text?", "options": ["HUTECH", "UTH", "RMIT"], "a": "UTH"},
+        {"q": "Where does the IT student spend most of their time?", "options": ["Library", "Cafeteria", "Computer labs"], "a": "Computer labs"}
       ]
     }
   ]
