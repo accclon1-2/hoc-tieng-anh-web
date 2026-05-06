@@ -1,12 +1,24 @@
 {
   "Level_A1 (Cơ bản)": [
     {
-      "prompt": "Sắp xếp câu: like / I / learning / English",
-      "answer": "I like learning English"
+      "prompt": "Sắp xếp câu: am / I / Information Technology / studying / at / UTH.",
+      "answer": "I am studying Information Technology at UTH"
     },
     {
-      "prompt": "Dịch sang tiếng Anh: Con mèo đang ngủ trên giường.",
-      "answer": "The cat is sleeping on the bed"
+      "prompt": "Sắp xếp câu: team / My / building / is / robot / a / smart.",
+      "answer": "My team is building a smart robot"
+    },
+    {
+      "prompt": "Sắp xếp câu: want / I / to / learn / programming / Python.",
+      "answer": "I want to learn Python programming"
+    },
+    {
+      "prompt": "Sắp xếp câu: games / playing / He / loves / classmates / with / his.",
+      "answer": "He loves playing games with his classmates"
+    },
+    {
+      "prompt": "Sắp xếp câu: writing / a / I / about / snowy / novel / am / winter / a.",
+      "answer": "I am writing a novel about a snowy winter"
     }
   ]
 }
