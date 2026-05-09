@@ -127,7 +127,7 @@ if mode == "Từ vựng":
         
         with st.form("vocab_form"):
             ans = st.text_input(q_label)
-            if st.form_submit_button("Kiểm tra ✅"):
+            if st.form_submit_button("Kiểm tra"):
                 if ans.strip().lower() == correct.strip().lower():
                     st.success("Chính xác!")
                     reset_task(); st.rerun()
