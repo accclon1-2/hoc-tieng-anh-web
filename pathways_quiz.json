@@ -1,0 +1,29 @@
+{
+  "Pathways: Life & Work": [
+    {
+      "sentence": "If you are ______, you can think of new and interesting ideas.",
+      "options": ["creative", "banal", "typical", "ordinary"],
+      "answer": "creative"
+    },
+    {
+      "sentence": "A/An ______ job is unusual and very special.",
+      "options": ["extraordinary", "normal", "similar", "banal"],
+      "answer": "extraordinary"
+    },
+    {
+      "sentence": "We need to ______ with each other to share information.",
+      "options": ["communicate", "grab", "quit", "produce"],
+      "answer": "communicate"
+    },
+    {
+      "sentence": "The HR department is looking for the best ______ for this position.",
+      "options": ["candidate", "equipment", "sunrise", "view"],
+      "answer": "candidate"
+    },
+    {
+      "sentence": "Firefighting is a ______ job because you can get hurt.",
+      "options": ["dangerous", "perfect", "positive", "imaginary"],
+      "answer": "dangerous"
+    }
+  ]
+}
