@@ -1,0 +1,20 @@
+{
+  "Pathways: Life & Work": [
+    {
+      "prompt": "Sắp xếp: is / She / for / responsible / managing / project / the / .",
+      "answer": "She is responsible for managing the project"
+    },
+    {
+      "prompt": "Sắp xếp: need / We / to / communicate / clearly / team / in / a / .",
+      "answer": "We need to communicate clearly in a team"
+    },
+    {
+      "prompt": "Sắp xếp: This / is / an / opportunity / explore / to / world / the / .",
+      "answer": "This is an opportunity to explore the world"
+    },
+    {
+      "prompt": "Sắp xếp: He / decided / to / quit / his / job / yesterday / .",
+      "answer": "He decided to quit his job yesterday"
+    }
+  ]
+}
