@@ -1,0 +1,20 @@
+{
+  "Pathways: Life & Work": [
+    {
+      "source": "Pathways LS - Unit 1",
+      "passage": "In the project 'Life in a Day', people from all over the world recorded their normal lives. Some stories were typical, like eating breakfast. But others were extraordinary. These videos connect people and help them communicate their unique experiences. It shows that even a banal day can contribute to a large global project.",
+      "questions": [
+        {"q": "What is the project 'Life in a Day' about?", "options": ["Normal lives", "Space travel", "Cooking"], "a": "Normal lives"},
+        {"q": "How do these videos help people?", "options": ["To save time", "To connect and communicate", "To earn money"], "a": "To connect and communicate"}
+      ]
+    },
+    {
+      "source": "Exploring Work - Lesson B",
+      "passage": "When you apply for a job, you must be enthusiastic. Managers want a candidate who is responsible for their work. During the training, you will learn new skills and how to use modern equipment. Experience is important, but a positive attitude is often more valuable.",
+      "questions": [
+        {"q": "What do managers want in a candidate?", "options": ["A strange view", "A responsible person", "A banal schedule"], "a": "A responsible person"},
+        {"q": "What will you learn during training?", "options": ["How to quit", "New skills and equipment", "How to grab things"], "a": "New skills and equipment"}
+      ]
+    }
+  ]
+}
