@@ -1,5 +1,5 @@
 {
-  "Pathways: Life & Work": {
+  "Pathways: Unit 1 & 2": {
     "vocabulary": [
       {"en": "extraordinary", "vn": "phi thường, lạ thường", "ipa": "/ɪkˈstrɔːrdəneri/"},
       {"en": "normal", "vn": "bình thường, thông thường", "ipa": "/ˈnɔːrml/"},
@@ -33,24 +33,15 @@
       {"en": "equipment", "vn": "thiết bị", "ipa": "/ɪˈkwɪpmənt/"},
       {"en": "manage", "vn": "quản lý", "ipa": "/ˈmænɪdʒ/"},
       {"en": "responsible for", "vn": "chịu trách nhiệm cho", "ipa": "/rɪˈspɑːnsəbl fɔːr/"},
-      {"en": "population", "vn": "quần thể, dân số", "ipa": "/ˌpɑːpjuˈleɪʃn/"}
-    ]
-  }
-  {
-  "Pathways: Unit 1&2": {
-    "vocabulary": [
+      {"en": "population", "vn": "quần thể, dân số", "ipa": "/ˌpɑːpjuˈleɪʃn/"},
       {"en": "discussion", "vn": "cuộc thảo luận", "ipa": "/dɪˈskʌʃn/"},
       {"en": "connection", "vn": "sự kết nối", "ipa": "/kəˈnekʃn/"},
       {"en": "contribution", "vn": "sự đóng góp", "ipa": "/ˌkɑːntrɪˈbjuːʃn/"},
       {"en": "waste time", "vn": "lãng phí thời gian", "ipa": "/weɪst taɪm/"},
       {"en": "save time", "vn": "tiết kiệm thời gian", "ipa": "/seɪv taɪm/"},
-      {"en": "typical", "vn": "điển hình", "ipa": "/ˈtɪpɪkl/"},
-      {"en": "extraordinary", "vn": "phi thường", "ipa": "/ɪkˈstrɔːrdəneri/"},
-      {"en": "adventure", "vn": "cuộc phiêu lưu", "ipa": "/ədˈventʃər/"},
-      {"en": "danger", "vn": "sự nguy hiểm", "ipa": "/ˈdeɪndʒər/"},
+      {"en": "danger", "vn": "sự nguy hiểm (danh từ)", "ipa": "/ˈdeɪndʒər/"},
       {"en": "job satisfaction", "vn": "sự hài lòng trong công việc", "ipa": "/dʒɑːb ˌsætɪsˈfækʃn/"},
       {"en": "career path", "vn": "lộ trình nghề nghiệp", "ipa": "/kəˈrɪr pæθ/"}
     ]
   }
-}
 }
