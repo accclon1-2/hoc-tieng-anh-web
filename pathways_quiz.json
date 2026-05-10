@@ -40,5 +40,32 @@
       "options": ["take care of", "depend on", "contribute", "produce"],
       "answer": "take care of"
     }
+    {
+    {
+      "sentence": "We had a long ______ about our group project in class today.",
+      "options": ["discussion", "discuss", "discussing", "discussed"],
+      "answer": "discussion"
+    },
+    {
+      "sentence": "Using a computer can help you ______ when you are writing a report.",
+      "options": ["save time", "waste time", "kill time", "have time"],
+      "answer": "save time"
+    },
+    {
+      "sentence": "The ______ of the world is increasing very fast.",
+      "options": ["population", "connection", "contribution", "education"],
+      "answer": "population"
+    },
+    {
+      "sentence": "He is ______ for managing a team of ten people.",
+      "options": ["responsible", "creative", "dangerous", "typical"],
+      "answer": "responsible"
+    },
+    {
+      "sentence": "The internet provides a global ______ between people.",
+      "options": ["connection", "adventure", "equipment", "schedule"],
+      "answer": "connection"
+    }
+}
   ]
 }
