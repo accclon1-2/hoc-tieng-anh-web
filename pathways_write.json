@@ -31,6 +31,18 @@
     {
       "prompt": "Sắp xếp: Candidates / should / be / enthusiastic / during / the / job / interview / .",
       "answer": "Candidates should be enthusiastic during the job interview"
+    },
+    {
+      "prompt": "Sắp xếp: should / You / for / apply / job / that / .",
+      "answer": "You should apply for that job"
+    },
+    {
+      "prompt": "Sắp xếp: need / We / training / use / to / equipment / this / .",
+      "answer": "We need training to use this equipment"
+    },
+    {
+     "prompt": "Sắp xếp: working / field / Scientists / in / the / love / .",
+      "answer": "Scientists love working in the field"
     }
-  ]
+]
 }
