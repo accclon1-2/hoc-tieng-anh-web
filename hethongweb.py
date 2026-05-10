@@ -6,7 +6,7 @@ from gtts import gTTS
 import io
 
 # --- CONFIG ---
-st.set_page_config(page_title="UTH English Pro v6.6", layout="wide")
+st.set_page_config(page_title="UTH English Pro v6.7", layout="wide")
 st.markdown("<style>button { cursor: pointer !important; }</style>", unsafe_allow_html=True)
 
 # --- 1. QUẢN LÝ DỮ LIỆU ---
@@ -66,7 +66,9 @@ def pick_next_word(vocab_list):
 
 # --- 3. SESSION STATE ---
 if 'logged_in' not in st.session_state: st.session_state.logged_in = True
-states = ['current_task', 'options', 'prev_mode', 'prev_level', 'prev_type', 'score_feedback', 'prev_module', 'is_correct', 'selected_segment_idx']
+# Bổ sung các biến trạng thái cho phần Nghe 5/20 câu
+states = ['current_task', 'options', 'prev_mode', 'prev_level', 'prev_type', 'score_feedback', 
+          'prev_module', 'is_correct', 'listen_sub_pool', 'current_listen_idx']
 for s in states:
     if s not in st.session_state: st.session_state[s] = None
 
@@ -75,16 +77,16 @@ def reset_task():
     st.session_state.options = None
     st.session_state.score_feedback = None
     st.session_state.is_correct = None
-    st.session_state.selected_segment_idx = None
 
 # --- 4. SIDEBAR ---
 with st.sidebar:
-    st.title("🎓 UTH Pro v6.6")
+    st.title("🎓 UTH Pro v6.7")
     module_choice = st.selectbox("Bộ Sách:", ["Mặc định", "Pathways"])
     module_prefix = "pathways" if module_choice == "Pathways" else "default"
     bundle = load_all_data(module_prefix)
     
     st.divider()
+    # THÊM "Scripts" VÀO ĐÂY
     mode = st.radio("Chế độ:", ["Từ vựng", "Trắc nghiệm", "Nghe", "Scripts", "Reading", "Writing"])
     
     all_keys = []
@@ -100,59 +102,75 @@ with st.sidebar:
     if (st.session_state.prev_mode != mode or st.session_state.prev_level != level or 
         st.session_state.prev_module != module_choice or (mode == "Từ vựng" and st.session_state.prev_type != type_mode)):
         reset_task()
+        st.session_state.listen_sub_pool = None # Reset hàng đợi nghe
         st.session_state.prev_mode, st.session_state.prev_level = mode, level
         st.session_state.prev_module, st.session_state.prev_type = module_choice, type_mode
         st.rerun()
 
 # --- 5. LOGIC CHẾ ĐỘ ---
 
-# 5.1 SCRIPTS (HỌC LIỆU GỐC)
+# 5.1 SCRIPTS (XEM LỜI THOẠI CHI TIẾT)
 if mode == "Scripts":
     l_data = get_content(bundle.get('listen'), level)
     if not l_data: st.warning("Trống dữ liệu Scripts.")
     else:
         st.subheader(f"Audio & Video Scripts: {level}")
-        for idx, segment in enumerate(l_data):
-            with st.expander(f"Đoạn {idx+1}: {segment['title']}"):
-                st.write(segment['full_transcript'])
-                if st.button(f"🔊 Nghe toàn bộ đoạn {idx+1}", key=f"btn_sc_{idx}"):
-                    play_audio(segment['full_transcript'])
+        tab_v, tab_a = st.tabs(["Video (Unit 1 & 2)", "Audio (Unit 1 & 2)"])
+        with tab_v:
+            for item in l_data.get("video", []):
+                with st.expander(f"Unit {item['unit']}: {item['title']}"):
+                    st.write(item['transcript'])
+                    if st.button(f"🔊 Nghe Video U{item['unit']}", key=f"v_{item['unit']}"): play_audio(item['transcript'])
+        with tab_a:
+            for item in l_data.get("audio", []):
+                with st.expander(f"Unit {item['unit']}: {item['title']}"):
+                    st.write(item['transcript'])
+                    if st.button(f"🔊 Nghe Audio U{item['unit']}", key=f"a_{item['unit']}"): play_audio(item['transcript'])
 
-# 5.2 NGHE (FULL AUDIO + GAP FILL)
+# 5.2 NGHE (CHỌN ĐOẠN -> LẤY 5 TRONG 20 CÂU)
 elif mode == "Nghe":
     l_data = get_content(bundle.get('listen'), level)
     if not l_data: st.warning("Trống dữ liệu Nghe.")
     else:
-        if st.session_state.selected_segment_idx is None:
-            st.session_state.selected_segment_idx = random.randint(0, len(l_data)-1)
+        col_t, col_u = st.columns(2)
+        l_type = col_t.selectbox("Loại:", ["video", "audio"])
+        l_unit = col_u.selectbox("Unit:", [1, 2])
         
-        segment = l_data[st.session_state.selected_segment_idx]
-        if st.session_state.current_task is None:
-            st.session_state.current_task = random.choice(segment['questions'])
+        # Lấy đoạn hội thoại khớp với lựa chọn
+        segment = next((x for x in l_data.get(l_type, []) if x['unit'] == l_unit), None)
         
-        task = st.session_state.current_task
-        st.subheader(f"🎧 Nghe & Điền từ: {segment['title']}")
-        
-        if st.button("🔊 PHÁT TOÀN BỘ ĐOẠN HỘI THOẠI"):
-            play_audio(segment['full_transcript'])
+        if segment:
+            # Khởi tạo pool 5 câu hỏi ngẫu nhiên từ 20 câu
+            if st.session_state.listen_sub_pool is None:
+                st.session_state.listen_sub_pool = random.sample(segment['questions'], 5)
+                st.session_state.current_listen_idx = 0
             
-        with st.form("listen_form"):
-            st.info(f"Nghe đoạn hội thoại trên và điền từ còn thiếu: \n\n **{task['sentence']}**")
-            u_ans = st.text_input("Nhập từ/cụm từ:")
-            if st.form_submit_button("Kiểm tra"):
-                if u_ans.strip().lower() == task['answer'].strip().lower():
-                    st.session_state.is_correct = True
-                    st.session_state.score_feedback = f"Chính xác! Đáp án: **{task['answer']}**"
-                else:
-                    st.session_state.is_correct = False
-                    st.session_state.score_feedback = f"Chưa đúng. Đáp án là: **{task['answer']}**"
-        
-        if st.session_state.score_feedback:
-            if st.session_state.is_correct: st.success(st.session_state.score_feedback)
-            else: st.error(st.session_state.score_feedback)
-            if st.button("Câu tiếp theo"): reset_task(); st.rerun()
+            curr_idx = st.session_state.current_listen_idx
+            task = st.session_state.listen_sub_pool[curr_idx]
+            
+            st.subheader(f"🎧 Nghe chuyên sâu: {segment['title']} ({curr_idx+1}/5)")
+            if st.button("🔊 PHÁT TOÀN BỘ ĐOẠN HỘI THOẠI"): play_audio(segment['transcript'])
+            
+            with st.form("listen_form"):
+                st.info(f"Nghe và điền từ: \n\n **{task['sentence']}**")
+                u_ans = st.text_input("Nhập đáp án:")
+                if st.form_submit_button("Kiểm tra"):
+                    if u_ans.strip().lower() == task['answer'].strip().lower():
+                        st.session_state.is_correct = True; st.session_state.score_feedback = "Chính xác!"
+                    else:
+                        st.session_state.is_correct = False; st.session_state.score_feedback = f"Sai rồi. Đáp án: **{task['answer']}**"
+            
+            if st.session_state.score_feedback:
+                if st.session_state.is_correct: st.success(st.session_state.score_feedback)
+                else: st.error(st.session_state.score_feedback)
+                if st.button("Tiếp theo"):
+                    if st.session_state.current_listen_idx < 4:
+                        st.session_state.current_listen_idx += 1
+                        st.session_state.score_feedback = None; st.rerun()
+                    else:
+                        st.balloons(); st.success("Hoàn thành bài nghe!"); st.session_state.listen_sub_pool = None; st.rerun()
 
-# 5.3 TỪ VỰNG (SRS)
+# 5.3 TỪ VỰNG
 elif mode == "Từ vựng":
     v_data = get_content(bundle.get('vocab'), level)
     v_list = v_data.get("vocabulary", []) if v_data and isinstance(v_data, dict) else []
@@ -210,7 +228,7 @@ elif mode == "Trắc nghiệm":
             else: st.error(st.session_state.score_feedback)
             if st.button("Câu tiếp theo"): reset_task(); st.rerun()
 
-# 5.5 READING & 5.6 WRITING (GIỮ NGUYÊN LOGIC CỦA BẠN)
+# 5.5 READING & 5.6 WRITING
 elif mode == "Reading":
     r_list = get_content(bundle.get('read'), level)
     if not r_list: st.warning("Trống bài đọc.")
@@ -224,7 +242,7 @@ elif mode == "Reading":
                 u_ans = [st.radio(f"{i+1}. {qs['q']}", qs['options'], key=f"rd_{i}") for i, qs in enumerate(r['questions'])]
                 if st.form_submit_button("Nộp bài"):
                     c_count = sum(1 for i, qs in enumerate(r['questions']) if u_ans[i] == qs['a'])
-                    st.session_state.score_feedback = f"Kết quả: {c_count}/{len(r['questions'])} đúng."
+                    st.session_state.score_feedback = f"Kết quả: {c_count}/{len(r['questions'])} câu đúng."
             if st.session_state.score_feedback:
                 st.info(st.session_state.score_feedback); st.button("Làm bài mới", on_click=reset_task)
 
