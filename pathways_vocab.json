@@ -41,7 +41,13 @@
       {"en": "save time", "vn": "tiết kiệm thời gian", "ipa": "/seɪv taɪm/"},
       {"en": "danger", "vn": "sự nguy hiểm (danh từ)", "ipa": "/ˈdeɪndʒər/"},
       {"en": "job satisfaction", "vn": "sự hài lòng trong công việc", "ipa": "/dʒɑːb ˌsætɪsˈfækʃn/"},
-      {"en": "career path", "vn": "lộ trình nghề nghiệp", "ipa": "/kəˈrɪr pæθ/"}
+      {"en": "career path", "vn": "lộ trình nghề nghiệp", "ipa": "/kəˈrɪr pæθ/"},
+      {"en": "apply", "vn": "ứng tuyển", "ipa": "/əˈplaɪ/"},
+      {"en": "interview", "vn": "phỏng vấn", "ipa": "/ˈɪntərvjuː/"},
+      {"en": "perfect", "vn": "hoàn hảo", "ipa": "/ˈpɜːrfɪkt/"},
+      {"en": "training", "vn": "đào tạo, huấn luyện", "ipa": "/ˈtreɪnɪŋ/"},
+      {"en": "in the field", "vn": "ngoài thực địa, hiện trường", "ipa": "/ɪn ðə fiːld/"},
+      {"en": "increase", "vn": "tăng lên", "ipa": "/ɪnˈkriːs/"}
     ]
   }
 }
