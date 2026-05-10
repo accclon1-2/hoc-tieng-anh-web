@@ -1,7 +1,23 @@
 {
-  "Pathways: Life & Work": [
+  "Pathways: Unit 1 & 2": [
     {
-      "source": "Pathways LS - Unit 1",
+      "source": "Pathways RW - Unit 1: The Life in a Day Project",
+      "passage": "In 2010, Ridley Scott started an extraordinary project called 'Life in a Day'. He asked people to film their typical day and upload it. The project received 80,000 videos from 192 countries. It shows that although we live in different places, our lives are often similar. We all communicate, spend time with family, and work. This film is a great contribution to human connection.",
+      "questions": [
+        {"q": "What kind of project is 'Life in a Day'?", "options": ["Ordinary", "Extraordinary", "Banal"], "a": "Extraordinary"},
+        {"q": "How does the film connect people?", "options": ["By showing differences", "By showing similarities in daily lives", "By selling technology"], "a": "By showing similarities in daily lives"}
+      ]
+    },
+    {
+      "source": "Pathways LS - Unit 2: Unusual Careers & Risk",
+      "passage": "Some people choose careers that offer adventure and high job satisfaction, even if they are dangerous. Smokejumpers and wildlife photographers work in the field using specialized equipment. They don't have a normal schedule and often depend on the weather. These professionals must be enthusiastic and highly skilled to manage the risks they face every day.",
+      "questions": [
+        {"q": "Why do people become smokejumpers?", "options": ["For a banal life", "For adventure and job satisfaction", "To save time"], "a": "For adventure and job satisfaction"},
+        {"q": "What is true about these unusual careers?", "options": ["They have a normal schedule", "They don't require skills", "They often depend on the weather"], "a": "They often depend on the weather"}
+      ]
+    },
+    {
+      "source": "Pathways LS - Unit 1: Recording Normal Lives",
       "passage": "In the project 'Life in a Day', people from all over the world recorded their normal lives. Some stories were typical, like eating breakfast. But others were extraordinary. These videos connect people and help them communicate their unique experiences. It shows that even a banal day can contribute to a large global project.",
       "questions": [
         {"q": "What is the project 'Life in a Day' about?", "options": ["Normal lives", "Space travel", "Cooking"], "a": "Normal lives"},
@@ -9,7 +25,7 @@
       ]
     },
     {
-      "source": "Exploring Work - Lesson B",
+      "source": "Exploring Work - Lesson B: Job Candidates",
       "passage": "When you apply for a job, you must be enthusiastic. Managers want a candidate who is responsible for their work. During the training, you will learn new skills and how to use modern equipment. Experience is important, but a positive attitude is often more valuable.",
       "questions": [
         {"q": "What do managers want in a candidate?", "options": ["A strange view", "A responsible person", "A banal schedule"], "a": "A responsible person"},
