@@ -31,6 +31,14 @@
         {"q": "What do managers want in a candidate?", "options": ["A strange view", "A responsible person", "A banal schedule"], "a": "A responsible person"},
         {"q": "What will you learn during training?", "options": ["How to quit", "New skills and equipment", "How to grab things"], "a": "New skills and equipment"}
       ]
-    }
-  ]
-}
+    },
+    {
+  "source": "Pathways - Career Steps",
+  "passage": "Finding the perfect job is not easy. First, you must apply and prepare for a difficult interview. If the company hires you, you will receive professional training. In some careers, like science or photography, you must work in the field. This helps you increase your experience and improve your skills.",
+  "questions": [
+    {"q": "What is the first thing to do for a perfect job?", "options": ["Apply", "Quit", "Wait for sunrise"], "a": "Apply"},
+    {"q": "Why do people work in the field?", "options": ["To increase experience", "To waste time", "To avoid interviews"], "a": "To increase experience"}
+       ]
+     }
+    ]
+  }
