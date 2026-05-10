@@ -227,6 +227,7 @@ elif mode == "Writing":
             if st.session_state.is_correct: st.success(st.session_state.score_feedback)
             else: st.info(st.session_state.score_feedback)
             if st.button("Câu tiếp theo"): reset_task(); st.rerun()
+                
 # 5.5 NGHE (DICTATION/GAP-FILL)
 elif mode == "Nghe":
     l_list = get_content(bundle['listen'], level)
