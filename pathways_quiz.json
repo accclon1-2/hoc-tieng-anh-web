@@ -64,6 +64,31 @@
       "sentence": "The internet provides a global ______ between people.",
       "options": ["connection", "adventure", "equipment", "schedule"],
       "answer": "connection"
+    },
+    {
+      "sentence": "You should ______ for the job if you have the right skills.",
+      "options": ["apply", "quit", "realize", "contribute"],
+      "answer": "apply"
+    },
+    {
+      "sentence": "After the application, the manager will call you for a job ______.",
+      "options": ["interview", "equipment", "population", "project"],
+      "answer": "interview"
+    },
+    {
+      "sentence": "New employees usually need two weeks of ______ before starting work.",
+      "options": ["training", "adventure", "sunrise", "connection"],
+      "answer": "training"
+    },
+    {
+      "sentence": "A wildlife photographer often works ______ to take photos of animals.",
+      "options": ["in the field", "in the office", "at home", "in an imaginary way"],
+      "answer": "in the field"
+    },
+    {
+      "sentence": "She is the ______ candidate because she has experience and skills.",
+      "options": ["perfect", "banal", "dangerous", "similar"],
+      "answer": "perfect"
     }
   ]
 }
