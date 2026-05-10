@@ -11,6 +11,8 @@ st.markdown("<style>button { cursor: pointer !important; }</style>", unsafe_allo
 
 # --- 1. QUẢN LÝ DỮ LIỆU ---
 def load_all_data(module_prefix):
+    """Nạp tất cả các file JSON dựa trên tiền tố (prefix). 
+    Không dùng cache để đảm bảo dữ liệu cập nhật ngay khi sửa file."""
     files = {
         "vocab": f"{module_prefix}_vocab.json", 
         "quiz": f"{module_prefix}_quiz.json", 
@@ -18,7 +20,11 @@ def load_all_data(module_prefix):
         "write": f"{module_prefix}_write.json",
         "scripts": f"{module_prefix}_scripts.json" 
     }
-    defaults = {"vocab": "vocab.json", "quiz": "quiz.json", "read": "reading.json", "write": "writing.json", "scripts": "scripts.json"}
+    defaults = {
+        "vocab": "vocab.json", "quiz": "quiz.json", 
+        "read": "reading.json", "write": "writing.json", "scripts": "scripts.json"
+    }
+    
     bundle = {}
     for k, v in files.items():
         target = v if os.path.exists(v) else defaults.get(k, "")
@@ -31,6 +37,7 @@ def load_all_data(module_prefix):
     return bundle
 
 def get_content(data_dict, target_level):
+    """Hàm lấy dữ liệu hỗ trợ cả cấu trúc danh sách phẳng và cấu trúc phân cấp."""
     if not data_dict: return None
     if target_level in data_dict: return data_dict[target_level]
     for key in data_dict.keys():
@@ -39,9 +46,12 @@ def get_content(data_dict, target_level):
     return list(data_dict.values())[0] if data_dict else None
 
 def play_audio(text):
+    """Chuyển đổi văn bản thành giọng nói tiếng Anh."""
     try:
-        tts = gTTS(text=text, lang='en'); fp = io.BytesIO()
-        tts.write_to_fp(fp); st.audio(fp, format='audio/mp3')
+        tts = gTTS(text=text, lang='en')
+        fp = io.BytesIO()
+        tts.write_to_fp(fp)
+        st.audio(fp, format='audio/mp3')
     except: st.error("Lỗi âm thanh!")
 
 # --- 2. THUẬT TOÁN SRS (TỪ VỰNG) ---
@@ -90,7 +100,7 @@ with st.sidebar:
     all_keys = []
     for d in bundle.values(): 
         if isinstance(d, dict): all_keys.extend(list(d.keys()))
-    unique_levels = sorted(list(set(all_keys))) if all_keys else ["Pathways: Life & Work"]
+    unique_levels = sorted(list(set(all_keys))) if all_keys else ["Level_A1"]
     level = st.selectbox("Trình độ:", unique_levels)
 
     type_mode = "Anh -> Việt"
@@ -107,25 +117,27 @@ with st.sidebar:
 
 # --- 5. LOGIC CHẾ ĐỘ ---
 
-# 5.1 SCRIPTS (XEM THEO AUDIO/VIDEO)
+# 5.1 SCRIPTS (HỌC LIỆU GỐC)
 if mode == "Scripts":
     s_data = get_content(bundle.get('scripts'), level)
     if not s_data: st.warning("Trống dữ liệu Scripts.")
     else:
-        st.subheader(f"Nội dung bài học: {level}")
+        st.subheader(f"Audio & Video Scripts: {level}")
         tab_v, tab_a = st.tabs(["Video (Unit 1 & 2)", "Audio (Unit 1 & 2)"])
         with tab_v:
             for item in s_data.get("video", []):
                 with st.expander(f"Unit {item['unit']}: {item['title']}"):
                     st.write(item['transcript'])
-                    if st.button(f"🔊 Nghe Video U{item['unit']}", key=f"vs_{item['unit']}"): play_audio(item['transcript'])
+                    if st.button(f"🔊 Nghe Video U{item['unit']}", key=f"vs_{item['unit']}"):
+                        play_audio(item['transcript'])
         with tab_a:
             for item in s_data.get("audio", []):
                 with st.expander(f"Unit {item['unit']}: {item['title']}"):
                     st.write(item['transcript'])
-                    if st.button(f"🔊 Nghe Audio U{item['unit']}", key=f"as_{item['unit']}"): play_audio(item['transcript'])
+                    if st.button(f"🔊 Nghe Audio U{item['unit']}", key=f"as_{item['unit']}"):
+                        play_audio(item['transcript'])
 
-# 5.2 NGHE (CHỌN ĐOẠN -> THUẬT TOÁN 5 TRONG 20)
+# 5.2 NGHE (CHỌN ĐOẠN -> LẤY 5/20 CÂU)
 elif mode == "Nghe":
     s_data = get_content(bundle.get('scripts'), level)
     if not s_data: st.warning("Trống dữ liệu Nghe.")
@@ -134,9 +146,11 @@ elif mode == "Nghe":
         l_type = col_t.selectbox("Loại học liệu:", ["video", "audio"])
         l_unit = col_u.selectbox("Chọn Unit:", [1, 2])
         
+        # Tìm đoạn hội thoại tương ứng
         segment = next((x for x in s_data.get(l_type, []) if x['unit'] == l_unit), None)
         
         if segment:
+            # Khởi tạo pool 5 câu ngẫu nhiên từ bộ 20 câu cố định của đoạn
             if st.session_state.listen_sub_pool is None:
                 st.session_state.listen_sub_pool = random.sample(segment['questions'], 5)
                 st.session_state.current_listen_idx = 0
@@ -149,15 +163,15 @@ elif mode == "Nghe":
                 play_audio(segment['transcript'])
             
             with st.form("listen_form"):
-                st.info(f"Điền từ còn thiếu: \n\n **{task['sentence']}**")
-                u_ans = st.text_input("Nhập đáp án:")
+                st.info(f"Nghe và điền từ còn thiếu: \n\n **{task['sentence']}**")
+                u_ans = st.text_input("Nhập đáp án của bạn:")
                 if st.form_submit_button("Kiểm tra"):
                     if u_ans.strip().lower() == task['answer'].strip().lower():
                         st.session_state.is_correct = True
-                        st.session_state.score_feedback = f"Chính xác! Từ đó là: **{task['answer']}**"
+                        st.session_state.score_feedback = f"Chính xác! Đáp án: **{task['answer']}**"
                     else:
                         st.session_state.is_correct = False
-                        st.session_state.score_feedback = f"Sai rồi. Đáp án là: **{task['answer']}**"
+                        st.session_state.score_feedback = f"Chưa đúng. Đáp án là: **{task['answer']}**"
             
             if st.session_state.score_feedback:
                 if st.session_state.is_correct: st.success(st.session_state.score_feedback)
@@ -167,7 +181,9 @@ elif mode == "Nghe":
                         st.session_state.current_listen_idx += 1
                         st.session_state.score_feedback = None; st.rerun()
                     else:
-                        st.balloons(); st.success("Hoàn thành bài nghe!"); st.session_state.listen_sub_pool = None; st.rerun()
+                        st.balloons()
+                        st.success("Hoàn thành bài luyện nghe này!")
+                        st.session_state.listen_sub_pool = None; st.rerun()
 
 # 5.3 TỪ VỰNG (SRS)
 elif mode == "Từ vựng":
@@ -241,7 +257,7 @@ elif mode == "Reading":
                 u_ans = [st.radio(f"{i+1}. {qs['q']}", qs['options'], key=f"rd_{i}") for i, qs in enumerate(r['questions'])]
                 if st.form_submit_button("Nộp bài"):
                     c_count = sum(1 for i, qs in enumerate(r['questions']) if u_ans[i] == qs['a'])
-                    st.session_state.score_feedback = f"Kết quả: {c_count}/{len(r['questions'])} câu đúng."
+                    st.session_state.score_feedback = f"Kết quả: {c_count}/{len(r['questions'])} đúng."
             if st.session_state.score_feedback:
                 st.info(st.session_state.score_feedback); st.button("Làm bài mới", on_click=reset_task)
 
