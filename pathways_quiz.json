@@ -41,7 +41,6 @@
       "answer": "take care of"
     }
     {
-    {
       "sentence": "We had a long ______ about our group project in class today.",
       "options": ["discussion", "discuss", "discussing", "discussed"],
       "answer": "discussion"
@@ -66,6 +65,5 @@
       "options": ["connection", "adventure", "equipment", "schedule"],
       "answer": "connection"
     }
-}
   ]
 }
