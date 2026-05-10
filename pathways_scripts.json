@@ -1,0 +1,116 @@
+{
+  "Pathways: Life & Work": {
+    "video": [
+      {
+        "unit": 1,
+        "title": "Working in the Wild (Holly Akello)",
+        "transcript": "Holly Akello doesn't have an ordinary job! She looks after wild animals at a conservation center in Uganda. Holly is positive and enthusiastic about her job. She likes to be with animals. I feel so lucky that I'm in the field doing what I've always dreamed of doing. The 23-year-old takes care of all kinds of animals-from snakes to hyenas. Some people think it's a dangerous job, but it's always an adventure, and she loves it! At the conservation center, Holly gets training and learns skills she uses every day. She's responsible for preparing food and feeding the lions. She gives them their meal. Then she sits down to spend time and communicate with them. I'm not afraid of wildlife. Because, I think, if you're able to understand them, it becomes so easy for you to work with them.",
+        "questions": [
+          {"sentence": "Holly Akello doesn't have an ______ job!", "answer": "ordinary"},
+          {"sentence": "She looks after wild animals at a ______ center in Uganda.", "answer": "conservation"},
+          {"sentence": "Holly is ______ and enthusiastic about her job.", "answer": "positive"},
+          {"sentence": "I feel so ______ that I'm in the field.", "answer": "lucky"},
+          {"sentence": "The 23-year-old takes ______ of all kinds of animals.", "answer": "care"},
+          {"sentence": "Some people think it's a ______ job.", "answer": "dangerous"},
+          {"sentence": "Holly gets ______ and learns skills.", "answer": "training"},
+          {"sentence": "She's ______ for preparing food.", "answer": "responsible"},
+          {"sentence": "She sits down to spend time and ______ with them.", "answer": "communicate"},
+          {"sentence": "I'm not ______ of wildlife.", "answer": "afraid"},
+          {"sentence": "If you are able to ______ them, it becomes easy.", "answer": "understand"},
+          {"sentence": "She works with snakes and ______.", "answer": "hyenas"},
+          {"sentence": "The job is always an ______.", "answer": "adventure"},
+          {"sentence": "She's responsible for ______ the lions.", "answer": "feeding"},
+          {"sentence": "She gives the lions their ______.", "answer": "meal"},
+          {"sentence": "It becomes ______ for you to work with them.", "answer": "easy"},
+          {"sentence": "She looks after ______ animals.", "answer": "wild"},
+          {"sentence": "The center is located in ______.", "answer": "Uganda"},
+          {"sentence": "Holly ______ with the lions.", "answer": "sits"},
+          {"sentence": "She's ______-three years old.", "answer": "twenty"}
+        ]
+      },
+      {
+        "unit": 2,
+        "title": "Life in a Day (Ridley Scott)",
+        "transcript": "In 2010, Ridley Scott started an extraordinary project called Life in a Day. He asked people to film their lives on one specific day. He received 80,000 videos from 192 countries. The project shows that although we live in different places, our lives are often similar. The film connects us by showing both typical moments and extraordinary events. It is a massive contribution to our understanding of global culture. Some videos show normal activities like eating breakfast or going to work. Others show strange events and beautiful views. A banal day can contribute to a large global project. Technology helps us realize that we are part of a massive population.",
+        "questions": [
+          {"sentence": "Ridley Scott started an ______ project.", "answer": "extraordinary"},
+          {"sentence": "He asked people to ______ their lives.", "answer": "film"},
+          {"sentence": "The project focused on one ______ day.", "answer": "specific"},
+          {"sentence": "He received ______ videos.", "answer": "80,000"},
+          {"sentence": "Videos came from 192 ______.", "answer": "countries"},
+          {"sentence": "The project shows our lives are often ______.", "answer": "similar"},
+          {"sentence": "The film ______ us together.", "answer": "connects"},
+          {"sentence": "It shows ______ moments and extraordinary events.", "answer": "typical"},
+          {"sentence": "It is a massive ______ to our understanding.", "answer": "contribution"},
+          {"sentence": "We gain a better understanding of global ______.", "answer": "culture"},
+          {"sentence": "Some videos show ______ activities.", "answer": "normal"},
+          {"sentence": "Others show ______ events.", "answer": "strange"},
+          {"sentence": "The videos show beautiful ______.", "answer": "views"},
+          {"sentence": "A ______ day can be part of the project.", "answer": "banal"},
+          {"sentence": "The project is a ______ global project.", "answer": "large"},
+          {"sentence": "______ helps us realize our connections.", "answer": "technology"},
+          {"sentence": "We are part of a ______ population.", "answer": "massive"},
+          {"sentence": "Ridley Scott is the ______ of the project.", "answer": "director"},
+          {"sentence": "The project was started in ______(year).", "answer": "2010"},
+          {"sentence": "People film their lives and ______ it.", "answer": "upload"}
+        ]
+      }
+    ],
+    "audio": [
+      {
+        "unit": 1,
+        "title": "Meet the Explorers (Thandiwe & Ricardo)",
+        "transcript": "Different people have different views about big cats, such as lions and jaguars. Some people think the animals are beautiful, but other people are afraid of them because they can be dangerous. Thandiwe Mweetwa and Ricardo Samuel Moreno are biologists, and they love to explore the natural world. Thandiwe is from Zambia, and she helps lions in her country. Sometimes people kill these animals because they want to protect their farm animals. So Thandiwe communicates with people in the villages and shares her experiences. Ricardo is from Panama, and he often goes on adventures in the jungle. It's difficult, and it takes special skills. He has to find creative ways to photograph them. For example, he uses special cameras in the trees.",
+        "questions": [
+          {"sentence": "Different people have different ______ about big cats.", "answer": "views"},
+          {"sentence": "Some think lions and ______ are beautiful.", "answer": "jaguars"},
+          {"sentence": "People are ______ of them because they are dangerous.", "answer": "afraid"},
+          {"sentence": "Thandiwe and Ricardo are ______.", "answer": "biologists"},
+          {"sentence": "They love to ______ the natural world.", "answer": "explore"},
+          {"sentence": "Thandiwe is from ______.", "answer": "Zambia"},
+          {"sentence": "She helps ______ in her country.", "answer": "lions"},
+          {"sentence": "People kill animals to protect their ______ animals.", "answer": "farm"},
+          {"sentence": "Thandiwe communicates with people in ______.", "answer": "villages"},
+          {"sentence": "She ______ her experiences with them.", "answer": "shares"},
+          {"sentence": "She gives ______ to other women scientists.", "answer": "opportunities"},
+          {"sentence": "Ricardo is from ______.", "answer": "Panama"},
+          {"sentence": "He goes on adventures in the ______.", "answer": "jungle"},
+          {"sentence": "The work is ______ and takes skills.", "answer": "difficult"},
+          {"sentence": "It takes ______ skills.", "answer": "special"},
+          {"sentence": "He finds ______ ways to photograph them.", "answer": "creative"},
+          {"sentence": "He uses special ______ in the trees.", "answer": "cameras"},
+          {"sentence": "The cameras take ______ of the animals.", "answer": "photos"},
+          {"sentence": "People learn about big ______.", "answer": "cats"},
+          {"sentence": "They teach ______ people about them.", "answer": "ordinary"}
+        ]
+      },
+      {
+        "unit": 2,
+        "title": "Social Media Presentation",
+        "transcript": "In my presentation, I talked about the advantages and disadvantages of social media in our lives. In conclusion, I think social media can be good for us, but we need to teach people to use it safely. Thank you all for listening to my presentation. I have time for a few questions. Student 1: Hi. Thank you for your interesting talk. How do we use social media safely? Presenter: People need to be careful online. For example, when you post something personal, your friends can see it. But strangers might see it too. Does that make sense? Student 2: I'd like to know which social media older people use. Presenter: I'm not exactly sure of the answer because that information comes from a survey about teenagers. But I can probably find out for you.",
+        "questions": [
+          {"sentence": "In my ______, I talked about social media.", "answer": "presentation"},
+          {"sentence": "I talked about the advantages and ______.", "answer": "disadvantages"},
+          {"sentence": "In ______, I think social media can be good.", "answer": "conclusion"},
+          {"sentence": "We need to teach people to use it ______.", "answer": "safely"},
+          {"sentence": "Thank you for ______ to my presentation.", "answer": "listening"},
+          {"sentence": "I have time for a ______ questions.", "answer": "few"},
+          {"sentence": "Thank you for your ______ talk.", "answer": "interesting"},
+          {"sentence": "People need to be ______ online.", "answer": "careful"},
+          {"sentence": "When you ______ something personal, friends can see it.", "answer": "post"},
+          {"sentence": "But ______ might see it too.", "answer": "strangers"},
+          {"sentence": "Does that ______?", "answer": "make sense"},
+          {"sentence": "Information comes from a ______ about teenagers.", "answer": "survey"},
+          {"sentence": "The survey is about ______.", "answer": "teenagers"},
+          {"sentence": "I can ______ find out for you.", "answer": "probably"},
+          {"sentence": "I'd like to know which media ______ people use.", "answer": "older"},
+          {"sentence": "I'm not exactly ______ of the answer.", "answer": "sure"},
+          {"sentence": "Friends can read or ______ your post.", "answer": "see"},
+          {"sentence": "We must teach ______ to be careful.", "answer": "children"},
+          {"sentence": "Put things ______ can be risky.", "answer": "online"},
+          {"sentence": "Are there any ______ questions?", "answer": "more"}
+        ]
+      }
+    ]
+  }
+}
