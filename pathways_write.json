@@ -1,5 +1,5 @@
 {
-  "Pathways: Life & Work": [
+  "Pathways: Unit 1 & 2": [
     {
       "prompt": "Sắp xếp: is / She / for / responsible / managing / project / the / .",
       "answer": "She is responsible for managing the project"
@@ -15,6 +15,22 @@
     {
       "prompt": "Sắp xếp: He / decided / to / quit / his / job / yesterday / .",
       "answer": "He decided to quit his job yesterday"
+    },
+    {
+      "prompt": "Sắp xếp: The / project / is / a / big / contribution / to / global / connection / .",
+      "answer": "The project is a big contribution to global connection"
+    },
+    {
+      "prompt": "Sắp xếp: Smokejumpers / need / special / equipment / to / fight / forest / fires / .",
+      "answer": "Smokejumpers need special equipment to fight forest fires"
+    },
+    {
+      "prompt": "Sắp xếp: Working / at / great / heights / is / a / very / dangerous / job / .",
+      "answer": "Working at great heights is a very dangerous job"
+    },
+    {
+      "prompt": "Sắp xếp: Candidates / should / be / enthusiastic / during / the / job / interview / .",
+      "answer": "Candidates should be enthusiastic during the job interview"
     }
   ]
 }
