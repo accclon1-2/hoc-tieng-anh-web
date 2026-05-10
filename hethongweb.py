@@ -91,7 +91,7 @@ with st.sidebar:
     bundle = load_all_data(module_prefix)
     
     st.divider()
-    mode = st.radio("Chế độ:", ["Từ vựng", "Trắc nghiệm", "Reading", "Writing"])
+    mode = st.radio("Chế độ:", ["Từ vựng", "Trắc nghiệm", "Nghe", "Reading", "Writing"])
     
     all_keys = []
     for d in bundle.values(): all_keys.extend(list(d.keys()))
@@ -226,4 +226,34 @@ elif mode == "Writing":
         if st.session_state.score_feedback:
             if st.session_state.is_correct: st.success(st.session_state.score_feedback)
             else: st.info(st.session_state.score_feedback)
+            if st.button("Câu tiếp theo"): reset_task(); st.rerun()
+# 5.5 NGHE (DICTATION/GAP-FILL)
+elif mode == "Nghe":
+    l_list = get_content(bundle['listen'], level)
+    if not l_list: st.warning("Trống dữ liệu nghe.")
+    else:
+        if st.session_state.current_task is None:
+            # Chọn ngẫu nhiên 1 câu đục lỗ từ danh sách 80 câu
+            st.session_state.current_task = random.choice(l_list)
+        
+        t = st.session_state.current_task
+        st.subheader(f"Luyện nghe: {level}")
+        
+        if st.button("🔊 Phát đoạn âm thanh"):
+            play_audio(t['transcript'])
+            
+        with st.form("listen_form"):
+            st.info(f"Nghe và điền từ còn thiếu: \n\n **{t['sentence']}**")
+            user_ans = st.text_input("Nhập từ bạn nghe được:")
+            if st.form_submit_button("Kiểm tra"):
+                if user_ans.strip().lower() == t['answer'].strip().lower():
+                    st.session_state.is_correct = True
+                    st.session_state.score_feedback = f"Chính xác! Từ đó là: **{t['answer']}**"
+                else:
+                    st.session_state.is_correct = False
+                    st.session_state.score_feedback = f"Chưa đúng. Đáp án là: **{t['answer']}**"
+
+        if st.session_state.score_feedback:
+            if st.session_state.is_correct: st.success(st.session_state.score_feedback)
+            else: st.error(st.session_state.score_feedback)
             if st.button("Câu tiếp theo"): reset_task(); st.rerun()
