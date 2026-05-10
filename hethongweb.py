@@ -120,10 +120,10 @@ with st.sidebar:
 # 5.1 SCRIPTS (HỌC LIỆU GỐC)
 if mode == "Scripts":
     s_data = get_content(bundle.get('scripts'), level)
-    if not s_data: st.warning("⚠️ Trống dữ liệu Scripts.")
+    if not s_data: st.warning("Trống dữ liệu Scripts.")
     else:
-        st.subheader(f"📜 Audio & Video Scripts: {level}")
-        tab_v, tab_a = st.tabs(["🎥 Video (Unit 1 & 2)", "🎧 Audio (Unit 1 & 2)"])
+        st.subheader(f"Audio & Video Scripts: {level}")
+        tab_v, tab_a = st.tabs(["Video (Unit 1 & 2)", "Audio (Unit 1 & 2)"])
         with tab_v:
             for item in s_data.get("video", []):
                 with st.expander(f"Unit {item['unit']}: {item['title']}"):
@@ -140,7 +140,7 @@ if mode == "Scripts":
 # 5.2 NGHE (CHỌN ĐOẠN -> LẤY 5/20 CÂU)
 elif mode == "Nghe":
     s_data = get_content(bundle.get('scripts'), level)
-    if not s_data: st.warning("⚠️ Trống dữ liệu Nghe.")
+    if not s_data: st.warning("Trống dữ liệu Nghe.")
     else:
         col_t, col_u = st.columns(2)
         l_type = col_t.selectbox("Loại học liệu:", ["video", "audio"])
@@ -165,7 +165,7 @@ elif mode == "Nghe":
             with st.form("listen_form"):
                 st.info(f"Nghe và điền từ còn thiếu: \n\n **{task['sentence']}**")
                 u_ans = st.text_input("Nhập đáp án của bạn:")
-                if st.form_submit_button("Kiểm tra ✅"):
+                if st.form_submit_button("Kiểm tra"):
                     if u_ans.strip().lower() == task['answer'].strip().lower():
                         st.session_state.is_correct = True
                         st.session_state.score_feedback = f"Chính xác! Đáp án: **{task['answer']}**"
@@ -176,7 +176,7 @@ elif mode == "Nghe":
             if st.session_state.score_feedback:
                 if st.session_state.is_correct: st.success(st.session_state.score_feedback)
                 else: st.error(st.session_state.score_feedback)
-                if st.button("Câu tiếp theo ⏭️"):
+                if st.button("Câu tiếp theo"):
                     if st.session_state.current_listen_idx < 4:
                         st.session_state.current_listen_idx += 1
                         st.session_state.score_feedback = None; st.rerun()
@@ -189,7 +189,7 @@ elif mode == "Nghe":
 elif mode == "Từ vựng":
     v_data = get_content(bundle.get('vocab'), level)
     v_list = v_data.get("vocabulary", []) if v_data and isinstance(v_data, dict) else []
-    if not v_list: st.warning("⚠️ Trống từ vựng.")
+    if not v_list: st.warning("Trống từ vựng.")
     else:
         if st.session_state.current_task is None: st.session_state.current_task = pick_next_word(v_list)
         w = st.session_state.current_task
@@ -204,7 +204,7 @@ elif mode == "Từ vựng":
             ans = st.text_input(f"Dịch từ: **{q_text}**")
             if st.form_submit_button("Kiểm tra"):
                 if ans.strip().lower() == correct.strip().lower():
-                    st.session_state.is_correct = True; st.session_state.score_feedback = "Chính xác! 🎉"
+                    st.session_state.is_correct = True; st.session_state.score_feedback = "Chính xác!"
                     if w['en'] in st.session_state.srs_retry_pool:
                         st.session_state.srs_retry_pool[w['en']]['count'] += 1
                         if st.session_state.srs_retry_pool[w['en']]['count'] >= 2:
@@ -223,7 +223,7 @@ elif mode == "Từ vựng":
 # 5.4 TRẮC NGHIỆM
 elif mode == "Trắc nghiệm":
     q_list = get_content(bundle.get('quiz'), level)
-    if not q_list: st.warning("⚠️ Trống trắc nghiệm.")
+    if not q_list: st.warning("Trống trắc nghiệm.")
     else:
         if st.session_state.current_task is None:
             st.session_state.current_task = random.choice(q_list)
@@ -235,7 +235,7 @@ elif mode == "Trắc nghiệm":
             choice = st.radio("Chọn đáp án:", st.session_state.options)
             if st.form_submit_button("Xác nhận"):
                 if choice == q['answer']:
-                    st.session_state.is_correct = True; st.session_state.score_feedback = "Quá chuẩn! 🎉"
+                    st.session_state.is_correct = True; st.session_state.score_feedback = "Quá chuẩn!"
                 else:
                     st.session_state.is_correct = False; st.session_state.score_feedback = f"Sai rồi. Đáp án: **{q['answer']}**"
         if st.session_state.score_feedback:
@@ -246,7 +246,7 @@ elif mode == "Trắc nghiệm":
 # 5.5 READING
 elif mode == "Reading":
     r_list = get_content(bundle.get('read'), level)
-    if not r_list: st.warning("⚠️ Trống bài đọc.")
+    if not r_list: st.warning("Trống bài đọc.")
     else:
         if st.session_state.current_task is None: st.session_state.current_task = random.choice(r_list)
         r = st.session_state.current_task
@@ -264,7 +264,7 @@ elif mode == "Reading":
 # 5.6 WRITING
 elif mode == "Writing":
     w_list = get_content(bundle.get('write'), level)
-    if not w_list: st.warning("⚠️ Trống dữ liệu viết.")
+    if not w_list: st.warning("Trống dữ liệu viết.")
     else:
         if st.session_state.current_task is None: st.session_state.current_task = random.choice(w_list)
         t = st.session_state.current_task
@@ -273,6 +273,6 @@ elif mode == "Writing":
             user_w = st.text_input("Gõ câu hoàn chỉnh:")
             if st.form_submit_button("Kiểm tra"):
                 if user_w.strip().lower().replace(".", "") == t['answer'].strip().lower().replace(".", ""):
-                    st.success("Viết rất tốt! ✨"); st.session_state.is_correct = True
+                    st.success("Viết rất tốt!"); st.session_state.is_correct = True
                 else: st.info(f"Đáp án gợi ý: {t['answer']}"); st.session_state.is_correct = False
         if st.session_state.is_correct is not None: st.button("Câu tiếp theo", on_click=reset_task)
