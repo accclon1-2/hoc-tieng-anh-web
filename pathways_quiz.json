@@ -1,5 +1,5 @@
 {
-  "Pathways: Unit 1&2": [
+  "Pathways: Unit 1 & 2": [
     {
       "sentence": "A group of people who work together to reach a goal: ____.",
       "options": ["team", "project", "candidate", "population"],
@@ -39,7 +39,7 @@
       "sentence": "Doctors often ____ sick people in the hospital.",
       "options": ["take care of", "depend on", "contribute", "produce"],
       "answer": "take care of"
-    }
+    },
     {
       "sentence": "We had a long ______ about our group project in class today.",
       "options": ["discussion", "discuss", "discussing", "discussed"],
