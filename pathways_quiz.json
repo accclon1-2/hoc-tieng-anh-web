@@ -1,29 +1,44 @@
 {
-  "Pathways: Life & Work": [
+  "Pathways: Unit 1&2": [
     {
-      "sentence": "If you are ______, you can think of new and interesting ideas.",
-      "options": ["creative", "banal", "typical", "ordinary"],
+      "sentence": "A group of people who work together to reach a goal: ____.",
+      "options": ["team", "project", "candidate", "population"],
+      "answer": "team"
+    },
+    {
+      "sentence": "If you are ____, you can think of new and original ideas.",
+      "options": ["creative", "banal", "ordinary", "typical"],
       "answer": "creative"
     },
     {
-      "sentence": "A/An ______ job is unusual and very special.",
-      "options": ["extraordinary", "normal", "similar", "banal"],
-      "answer": "extraordinary"
+      "sentence": "The time in the morning when the sun first appears: ____.",
+      "options": ["sunrise", "schedule", "adventure", "view"],
+      "answer": "sunrise"
     },
     {
-      "sentence": "We need to ______ with each other to share information.",
-      "options": ["communicate", "grab", "quit", "produce"],
+      "sentence": "To share information by speaking or writing: ____.",
+      "options": ["communicate", "realize", "grab", "quit"],
       "answer": "communicate"
     },
     {
-      "sentence": "The HR department is looking for the best ______ for this position.",
-      "options": ["candidate", "equipment", "sunrise", "view"],
+      "sentence": "A job that is likely to cause harm is a ____ job.",
+      "options": ["dangerous", "perfect", "extraordinary", "similar"],
+      "answer": "dangerous"
+    },
+    {
+      "sentence": "Managers want a ____ who is enthusiastic about the job.",
+      "options": ["candidate", "equipment", "skill", "project"],
       "answer": "candidate"
     },
     {
-      "sentence": "Firefighting is a ______ job because you can get hurt.",
-      "options": ["dangerous", "perfect", "positive", "imaginary"],
-      "answer": "dangerous"
+      "sentence": "I need to ____ my skills before applying for a new job.",
+      "options": ["increase", "quit", "realize", "grab"],
+      "answer": "increase"
+    },
+    {
+      "sentence": "Doctors often ____ sick people in the hospital.",
+      "options": ["take care of", "depend on", "contribute", "produce"],
+      "answer": "take care of"
     }
   ]
 }
