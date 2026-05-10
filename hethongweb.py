@@ -6,7 +6,7 @@ from gtts import gTTS
 import io
 
 # --- CONFIG ---
-st.set_page_config(page_title="UTH English Pro v6.7", layout="wide")
+st.set_page_config(page_title="UTH English Pro v7.0", layout="wide")
 st.markdown("<style>button { cursor: pointer !important; }</style>", unsafe_allow_html=True)
 
 # --- 1. QUẢN LÝ DỮ LIỆU ---
@@ -40,7 +40,7 @@ def get_content(data_dict, target_level):
     return list(data_dict.values())[0] if data_dict else None
 
 def play_audio(text):
-    """Phát âm thanh đa giọng dựa trên tên nhân vật (Narrator, Holly, Susan, Ray...)"""
+    """Phát âm thanh đa giọng dựa trên nhân vật (Narrator, Holly, Susan, Ray...)"""
     try:
         voice_map = {
             "Narrator": "co.uk", "Holly": "com", "Annie": "com", "Ray": "com.au", 
@@ -63,7 +63,7 @@ def play_audio(text):
         st.audio(combined_audio.getvalue(), format='audio/mp3')
     except: st.error("Lỗi âm thanh đa giọng!")
 
-# --- 2. THUẬT TOÁN SRS ---
+# --- 2. THUẬT TOÁN SRS (TỪ VỰNG) ---
 def init_srs():
     for s in ['srs_retry_pool', 'srs_spaced_pool', 'srs_fail_streak']:
         if s not in st.session_state: st.session_state[s] = {} if s == 'srs_retry_pool' else []
@@ -92,7 +92,7 @@ def reset_task():
 
 # --- 4. SIDEBAR ---
 with st.sidebar:
-    st.title("🎓 UTH Pro v6.7")
+    st.title("🎓 UTH Pro v7.0")
     module_choice = st.selectbox("Bộ Sách:", ["Mặc định", "Pathways"])
     module_prefix = "pathways" if module_choice == "Pathways" else "default"
     bundle = load_all_data(module_prefix)
@@ -118,6 +118,7 @@ with st.sidebar:
 
 # --- 5. LOGIC CHẾ ĐỘ ---
 
+# 5.1 SCRIPTS
 if mode == "Scripts":
     s_data = get_content(bundle.get('scripts'), level)
     if not s_data: st.warning("Trống dữ liệu Scripts.")
@@ -135,6 +136,7 @@ if mode == "Scripts":
                     st.text(item['transcript'])
                     if st.button(f"🔊 Nghe Audio U{item['unit']}", key=f"as_{item['unit']}"): play_audio(item['transcript'])
 
+# 5.2 NGHE (5/20 QUESTIONS)
 elif mode == "Nghe":
     s_data = get_content(bundle.get('scripts'), level)
     if not s_data: st.warning("Trống dữ liệu Nghe.")
@@ -162,13 +164,13 @@ elif mode == "Nghe":
             if st.button("🔊 PHÁT TOÀN BỘ ĐOẠN"): play_audio(segment['transcript'])
             
             with st.form("listen_form"):
-                st.info(f"Điền từ: {task['sentence']}")
+                st.info(f"Điền từ còn thiếu: \n\n **{task['sentence']}**")
                 u_ans = st.text_input("Đáp án của bạn:")
                 if st.form_submit_button("Kiểm tra"):
                     if u_ans.strip().lower() == task['answer'].strip().lower():
-                        st.session_state.is_correct = True; st.session_state.score_feedback = "Đúng!"
+                        st.session_state.is_correct = True; st.session_state.score_feedback = "Chính xác! 🎉"
                     else:
-                        st.session_state.is_correct = False; st.session_state.score_feedback = f"Sai. Đáp án: {task['answer']}"
+                        st.session_state.is_correct = False; st.session_state.score_feedback = f"Chưa đúng. Đáp án: {task['answer']}"
             
             if st.session_state.score_feedback:
                 if st.session_state.is_correct: st.success(st.session_state.score_feedback)
@@ -178,29 +180,37 @@ elif mode == "Nghe":
                         st.session_state.current_listen_idx += 1
                         st.session_state.score_feedback = None; st.rerun()
                     else:
-                        st.balloons(); st.success("Hoàn thành!"); st.session_state.listen_sub_pool = None; st.rerun()
+                        st.balloons(); st.success("Hoàn thành bài tập!"); st.session_state.listen_sub_pool = None; st.rerun()
 
+# 5.3 TỪ VỰNG (FIXED: ĐÃ THÊM IPA)
 elif mode == "Từ vựng":
     v_data = get_content(bundle.get('vocab'), level)
     v_list = v_data.get("vocabulary", []) if v_data else []
-    if not v_list: st.warning("Trống dữ liệu.")
+    if not v_list: st.warning("Trống dữ liệu từ vựng.")
     else:
         if st.session_state.current_task is None: st.session_state.current_task = pick_next_word(v_list)
         w = st.session_state.current_task
         st.subheader(f"Luyện từ: {level}")
-        if st.button("🔊 Nghe"): play_audio(w['en'])
+        
+        # --- ĐOẠN HIỂN THỊ IPA VÀ AUDIO ---
+        col_info, col_audio = st.columns([3, 1])
+        with col_info: st.markdown(f"**IPA:** `{w.get('ipa', 'N/A')}`")
+        with col_audio:
+            if st.button("🔊 Nghe"): play_audio(w['en'])
+            
         q_text = w['en'] if type_mode == "Anh -> Việt" else w['vn']
         correct = w['vn'] if type_mode == "Anh -> Việt" else w['en']
         with st.form("vocab_form"):
-            ans = st.text_input(f"Dịch: {q_text}")
-            if st.form_submit_button("Check"):
+            ans = st.text_input(f"Dịch từ: **{q_text}**")
+            if st.form_submit_button("Kiểm tra"):
                 if ans.strip().lower() == correct.strip().lower():
-                    st.success("Đúng!"); st.session_state.is_correct = True
+                    st.success("Đúng rồi! 🎉"); st.session_state.is_correct = True
                 else:
-                    st.error(f"Sai. Đáp án: {correct}"); st.session_state.is_correct = False
+                    st.error(f"Sai rồi. Đáp án: **{correct}**"); st.session_state.is_correct = False
         if st.session_state.is_correct is not None:
-            if st.button("Tiếp"): st.session_state.srs_total_seen += 1; reset_task(); st.rerun()
+            if st.button("Câu tiếp theo"): st.session_state.srs_total_seen += 1; reset_task(); st.rerun()
 
+# (GIỮ NGUYÊN CÁC CHẾ ĐỘ TRẮC NGHIỆM, READING, WRITING...)
 elif mode == "Trắc nghiệm":
     q_list = get_content(bundle.get('quiz'), level)
     if not q_list: st.warning("Trống dữ liệu.")
@@ -213,7 +223,7 @@ elif mode == "Trắc nghiệm":
         with st.form("quiz_form"):
             st.info(q['sentence'])
             choice = st.radio("Chọn đáp án:", st.session_state.options)
-            if st.form_submit_button("Check"):
+            if st.form_submit_button("Xác nhận"):
                 if choice == q['answer']: st.success("Đúng!"); st.session_state.is_correct = True
                 else: st.error(f"Sai. Đáp án: {q['answer']}"); st.session_state.is_correct = False
         if st.session_state.is_correct is not None:
