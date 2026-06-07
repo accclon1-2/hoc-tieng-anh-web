@@ -1,0 +1,14 @@
+# Bỏ qua tất cả các file dữ liệu tĩnh hiện tại
+*.json
+
+# Bỏ qua file âm thanh sinh ra tạm thời
+*.mp3
+
+# Bỏ qua file cơ sở dữ liệu SQLite (chúng ta sẽ dùng ở Bước 2)
+*.db
+*.sqlite3
+
+# Bỏ qua các file rác của hệ thống Python
+__pycache__/
+venv/
+.env
